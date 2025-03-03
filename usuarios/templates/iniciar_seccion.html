@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+{% block content %}
+    <h1>Iniciar seccion</h1>
+
+    <form action="/iniciar_seccion/" method="POST">
+        {% csrf_token  %}
+        {{form.as_p}}
+        <button> Iniciar </button>
+    </form>
+
+{% endblock %}

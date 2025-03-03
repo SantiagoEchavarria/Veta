@@ -1,46 +1,56 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.contrib.auth import login, logout
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from .models import Usuario  # Importa el modelo personalizado
+from .forms import UsuarioCreationForm  # Debes crear este formulario
 
-# Create your views here.
+# Vista de inicio
 def inicio(request):
     return render(request, 'inicio.html')
 
+# Vista para registrar usuario
 def crearSeccion(request):
     if request.method == 'GET': 
-        print('Enviando formulario')
         return render(request, 'crear_seccion.html', {
-            'form': UserCreationForm()
+            'form': UsuarioCreationForm()
         })
-
     else:
-        username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        form = UsuarioCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])  
+            user.save()
+            login(request, user)
+            return redirect('inicio')
+        else:
+            return render(request, 'crear_seccion.html', {
+                'form': form,
+                'error': 'Error en el formulario',
+                'form_errors': form.errors
+            })
 
-        # Verificar si las contraseñas coinciden
-        if password1 != password2:
-            return HttpResponse('Las contraseñas no coinciden')
+# Vista para iniciar sesión
+def iniciarSeccion(request):
+    if request.method == 'GET': 
+        return render(request, 'iniciar_seccion.html', {
+            'form': AuthenticationForm()
+        })
+    else:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'iniciar_seccion.html', {
+                'form': AuthenticationForm(),
+                'error': 'Nombre de usuario o contraseña incorrectos'
+            })
+        else:
+            login(request, user)
+            return redirect('inicio')
 
-        # Verificar si el usuario ya existe
-        if User.objects.filter(username=username).exists():
-            return HttpResponse('El usuario ya existe')
-
-        # Crear el usuario si todo está bien
-        user = User.objects.create_user(username=username, password=password1)
-
-        # Autenticar al usuario antes de iniciar sesión
-        user = authenticate(username=username, password=password1)
-
-        if user:
-            login(request, user)  
-
-        return redirect('inicio')
+# Vista para cerrar sesión
+@login_required
+def cerrarSeccion(request):
+    logout(request)
+    return redirect('inicio')

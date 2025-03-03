@@ -21,5 +21,7 @@ from usuarios import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicio, name='inicio'),
-    path('crear_seccion/', views.crearSeccion, name='crear_seccion')
+    path('crear_seccion/', views.crearSeccion, name='crear_seccion'),
+    path('iniciar_seccion/', views.iniciarSeccion, name='iniciar_seccion'),
+    path('cerrar_seccion/', views.cerrarSeccion, name='cerrar_seccion')
 ]
