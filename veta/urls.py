@@ -17,11 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from usuarios import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicio, name='inicio'),
     path('crear_seccion/', views.crearSeccion, name='crear_seccion'),
     path('iniciar_seccion/', views.iniciarSeccion, name='iniciar_seccion'),
-    path('cerrar_seccion/', views.cerrarSeccion, name='cerrar_seccion')
-]
+    path('cerrar_seccion/', views.cerrarSeccion, name='cerrar_seccion'),
+
+     # URL para solicitar la recuperación de contraseña
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    
+    # Mensaje de confirmación tras enviar el correo
+    path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    
+    # URL con el token único enviado por email
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    
+    # Confirmación de que la contraseña ha sido cambiada
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete')]
