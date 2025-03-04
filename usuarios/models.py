@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class Usuario(AbstractUser):
+    username = None
     nombre = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     telefono = models.CharField(max_length=15, blank=True, null=True)
@@ -11,7 +12,7 @@ class Usuario(AbstractUser):
 
     # Cambia el username por el email
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'nombre']
+    REQUIRED_FIELDS = ['nombre']
 
     def __str__(self):
         return self.email
