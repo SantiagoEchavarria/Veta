@@ -5,7 +5,8 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Usuario  # Importa el modelo personalizado
-from .forms import UsuarioCreationForm  # Debes crear este formulario
+from .forms import UsuarioCreationForm  
+from .forms import UsuarioUpdateForm
 
 # Vista de inicio
 def inicio(request):
@@ -58,9 +59,9 @@ def cerrarSeccion(request):
 @login_required
 def editarSeccion(request):
     usuario = request.user  # Obtiene el usuario autenticado
-    
+
     if request.method == 'POST':
-        form = UsuarioCreationForm(request.POST, instance=usuario)
+        form = UsuarioUpdateForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
             return redirect('inicio')  # Redirige a la página de inicio después de la edición
@@ -71,6 +72,5 @@ def editarSeccion(request):
                 'form_errors': form.errors
             })
     else:
-        form = UsuarioCreationForm(instance=usuario)
+        form = UsuarioUpdateForm(instance=usuario)
         return render(request, 'editar_seccion.html', {'form': form})
-
