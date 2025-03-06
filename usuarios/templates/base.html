@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <style>
         .user-avatar {
-            width: 40px;  /* Tamaño de la imagen */
-            height: 40px;
+            width: 30px;  
+            height: 30px;
             border-radius: 50%; /* Convierte la imagen en un círculo */
             object-fit: cover; /* Ajusta la imagen sin deformarla */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra opcional */
@@ -37,9 +37,18 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                 <img src="{{ request.user.get_gravatar_url }}" class="user-avatar" width="30" height="30">
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="/cerrar_seccion/">Cerrar sesión</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="userDropdown">
+                                <li>
+                                    <img src="{{ request.user.get_gravatar_url }}" class="user-avatar my-2" width="80" height="80">
+                                </li>
+                                <li>
+                                    <span class="d-block fw-bold">{{ request.user.nombre }}</span>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item mt-2" href="/cerrar_seccion/">Cerrar sesión</a>
+                                </li>
                             </ul>
+                            
                         </li>
                     {% else %}
                         <li class="nav-item dropdown">
