@@ -1,0 +1,8 @@
+.user-avatar {
+    width: 40px;  /* Tamaño de la imagen */
+    height: 40px;
+    border-radius: 50%; /* Convierte la imagen en un círculo */
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+    border: 2px solid #ffffff; /* Borde blanco opcional */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+}
