@@ -54,3 +54,23 @@ def iniciarSeccion(request):
 def cerrarSeccion(request):
     logout(request)
     return redirect('inicio')
+
+@login_required
+def editarSeccion(request):
+    usuario = request.user  # Obtiene el usuario autenticado
+    
+    if request.method == 'POST':
+        form = UsuarioCreationForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('inicio')  # Redirige a la página de inicio después de la edición
+        else:
+            return render(request, 'editar_seccion.html', {
+                'form': form,
+                'error': 'Error al actualizar la información',
+                'form_errors': form.errors
+            })
+    else:
+        form = UsuarioCreationForm(instance=usuario)
+        return render(request, 'editar_seccion.html', {'form': form})
+

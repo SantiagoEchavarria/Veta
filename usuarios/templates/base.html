@@ -45,7 +45,10 @@
                                     <span class="d-block fw-bold">{{ request.user.nombre }}</span>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item mt-2" href="/cerrar_seccion/">Cerrar sesión</a>
+                                    <a class="dropdown-item mt-2" href="/editar_seccion">Editar perfil</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/cerrar_seccion/">Cerrar sesión</a>
                                 </li>
                             </ul>
                             
@@ -56,8 +59,8 @@
                                 <img src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png" alt="Usuario" width="30" height="30">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="/crear_seccion">Crear Sección</a></li>
-                                <li><a class="dropdown-item" href="/iniciar_seccion">Iniciar Sesión</a></li>
+                                <li><a class="dropdown-item" href="/crear_seccion">Crear sesión</a></li>
+                                <li><a class="dropdown-item" href="/iniciar_seccion">Iniciar sesión</a></li>
                             </ul>
                         </li>
                     {% endif %}
