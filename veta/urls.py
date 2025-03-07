@@ -1,37 +1,23 @@
-"""
-URL configuration for veta project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from usuarios import views
+from medicaciones import views as views_medicaciones
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #urls de Usuarios:
     path('', views.inicio, name='inicio'),
     path('crear_seccion/', views.crearSeccion, name='crear_seccion'),
     path('iniciar_seccion/', views.iniciarSeccion, name='iniciar_seccion'),
     path('cerrar_seccion/', views.cerrarSeccion, name='cerrar_seccion'),
     path('editar_seccion/', views.editarSeccion, name='editar_seccion'),
-
-    # URL para solicitar la recuperación de contraseña
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    # Mensaje de confirmación tras enviar el correo
     path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    # URL con el token único enviado por email
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    # Confirmación de que la contraseña ha sido cambiada
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete')]
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    
+    #Urls de medicaciones:
+    path('medicaciones/crear/', views_medicaciones.crear_medicacion, name='crear_medicacion'),
+
+    ]
