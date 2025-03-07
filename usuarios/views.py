@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Usuario  # Importa el modelo personalizado
+from .models import Usuario  
 from .forms import UsuarioCreationForm  
 from .forms import UsuarioUpdateForm
 
