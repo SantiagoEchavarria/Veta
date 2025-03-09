@@ -13,4 +13,4 @@ def mi_detalle_paciente(request):
         # return redirect('completar_perfil')
     
     context = {'paciente': paciente}
-    return render(request, 'pacientes_detalles.html', context)
+    return render(request, 'pacientes/pacientes_detalles.html', context)

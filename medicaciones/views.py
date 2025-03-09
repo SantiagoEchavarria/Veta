@@ -20,8 +20,8 @@ def crear_medicacion(request):
             medicacion.save()
             return redirect("inicio")  
         else:
-            return render(request, 'crear_medicacion.html', {'form': form, 'form_errors': form.errors})
+            return render(request, 'medicaciones/crear_medicacion.html', {'form': form, 'form_errors': form.errors})
     
     else:
         form = MedicacionForm()
-        return render(request, 'crear_medicacion.html', {'form': form})
+        return render(request, 'medicaciones/crear_medicacion.html', {'form': form})

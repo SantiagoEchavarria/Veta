@@ -5,17 +5,16 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Usuario  
-from .forms import UsuarioCreationForm  
-from .forms import UsuarioUpdateForm
+from .forms import UsuarioCreationForm, UsuarioUpdateForm
 
 # Vista de inicio
 def inicio(request):
-    return render(request, 'inicio.html')
+    return render(request, 'usuarios/inicio.html')
 
 # Vista para registrar usuario
 def crearSeccion(request):
     if request.method == 'GET': 
-        return render(request, 'crear_seccion.html', {
+        return render(request, 'usuarios/crear_seccion.html', {
             'form': UsuarioCreationForm()
         })
     else:
@@ -27,7 +26,7 @@ def crearSeccion(request):
             login(request, user)
             return redirect('inicio')
         else:
-            return render(request, 'crear_seccion.html', {
+            return render(request, 'usuarios/crear_seccion.html', {
                 'form': form,
                 'error': 'Error en el formulario',
                 'form_errors': form.errors
@@ -36,13 +35,13 @@ def crearSeccion(request):
 # Vista para iniciar sesión
 def iniciarSeccion(request):
     if request.method == 'GET': 
-        return render(request, 'iniciar_seccion.html', {
+        return render(request, 'usuarios/iniciar_seccion.html', {
             'form': AuthenticationForm()
         })
     else:
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request, 'iniciar_seccion.html', {
+            return render(request, 'usuarios/iniciar_seccion.html', {
                 'form': AuthenticationForm(),
                 'error': 'Nombre de usuario o contraseña incorrectos'
             })
@@ -66,11 +65,11 @@ def editarSeccion(request):
             form.save()
             return redirect('inicio')  # Redirige a la página de inicio después de la edición
         else:
-            return render(request, 'editar_seccion.html', {
+            return render(request, 'usuarios/editar_seccion.html', {
                 'form': form,
                 'error': 'Error al actualizar la información',
                 'form_errors': form.errors
             })
     else:
         form = UsuarioUpdateForm(instance=usuario)
-        return render(request, 'editar_seccion.html', {'form': form})
+        return render(request, 'usuarios/editar_seccion.html', {'form': form})
