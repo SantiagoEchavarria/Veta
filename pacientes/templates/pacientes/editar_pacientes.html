@@ -1,0 +1,22 @@
+{% extends "usuarios/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar tipo de diabetes</h2>
+    
+    <div class="alert alert-info">
+        Para cambiar tu nombre, ve a <a href="{% url 'editar_seccion' %}" class="alert-link">Editar perfil</a>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.tipo_diabetes.label_tag }}
+            {{ form.tipo_diabetes }}
+            <small class="form-text text-muted">{{ form.tipo_diabetes.help_text }}</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{% url 'mi_detalle_paciente' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
