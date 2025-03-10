@@ -38,12 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework', #Crear apis al instate
+    'corsheaders', #Comunicarse con otro backend
     'usuarios',
     'pacientes',
     'medicaciones'
 ]
+# 'corsheaders.middleware.CorsMiddleware':
+# Este middleware añade automáticamente los encabezados CORS a las respuestas
+# de tu aplicación, según lo definido en las configuraciones (como CORS_ALLOWED_ORIGINS).
+# Se recomienda colocarlo lo más arriba posible en la lista de MIDDLEWARE.
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,3 +143,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'santiagogil7112@gmail.com'  
 EMAIL_HOST_PASSWORD = 'ovll gcso zdfs bnkt'  
 
+
+# CORS_ALLOWED_ORIGINS:
+# Aquí se especifican los dominios permitidos para realizar solicitudes
+# cross-origin a tu API. Esto es esencial cuando el frontend y el backend
+# están en dominios distintos.
+CORS_ALLOWED_ORIGINS = [
+
+]
