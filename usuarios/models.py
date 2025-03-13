@@ -34,6 +34,7 @@ class UsuarioManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractUser):
+    primera_vez = models.BooleanField(default=True)
     username = None
     nombre = models.CharField(max_length=100)
     email = models.EmailField(unique=True)

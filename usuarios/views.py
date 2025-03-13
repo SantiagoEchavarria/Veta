@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Usuario  
-from .forms import UsuarioCreationForm, UsuarioUpdateForm
+from .forms import UsuarioCreationForm, UsuarioUpdateForm, UsuarioContrasenaForm
+from django.contrib import messages
 
 # Vista de inicio
 def inicio(request):
-    return render(request, 'usuarios/inicio.html')
+    mostrar_modal = request.session.pop('mostrar_modal', False) 
+    return render(request, 'usuarios/inicio.html', {'mostrar_modal': mostrar_modal})
 
 # Vista para registrar usuario
 def crearSeccion(request):
@@ -46,24 +48,33 @@ def iniciarSeccion(request):
                 'error': 'Nombre de usuario o contraseña incorrectos'
             })
         else:
+            mostrar_modal = False
+            
             login(request, user)
-            return redirect('inicio')
+            if user.primera_vez: 
+                request.session['mostrar_modal'] = True
+                user.primera_vez = False  
+                user.save() 
+        return redirect('inicio')
 
 # Vista para cerrar sesión
 @login_required
 def cerrarSeccion(request):
+    user = request.user
+    user.primera_vez = True
+    user.save()
     logout(request)
     return redirect('inicio')
 
 @login_required
 def editarSeccion(request):
-    usuario = request.user  # Obtiene el usuario autenticado
+    usuario = request.user  
 
     if request.method == 'POST':
         form = UsuarioUpdateForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            return redirect('inicio')  # Redirige a la página de inicio después de la edición
+            return redirect('inicio')  
         else:
             return render(request, 'usuarios/editar_seccion.html', {
                 'form': form,
@@ -73,3 +84,19 @@ def editarSeccion(request):
     else:
         form = UsuarioUpdateForm(instance=usuario)
         return render(request, 'usuarios/editar_seccion.html', {'form': form})
+    
+@login_required
+def actualizar_contrasena(request):
+    if request.method == 'POST':
+        form = UsuarioContrasenaForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, request.user)  
+            messages.success(request, "Contraseña actualizada correctamente.")
+            return redirect('inicio')  
+        else:
+            messages.error(request, "Por favor, corrige los errores en el formulario.")
+    else:
+        form = UsuarioContrasenaForm(user=request.user)
+    
+    return render(request, 'usuarios/actualizar_contrasena.html', {'form': form})

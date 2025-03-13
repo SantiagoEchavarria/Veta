@@ -1,0 +1,25 @@
+{% extends "usuarios/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Actualizar Contraseña</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_old_password" class="form-label">Contraseña actual</label>
+            {{ form.old_password }}
+        </div>
+        <div class="mb-3">
+            <label for="id_new_password1" class="form-label">Nueva contraseña</label>
+            {{ form.new_password1 }}
+            <small class="form-text text-muted">{{ form.new_password1.help_text }}</small>
+        </div>
+        <div class="mb-3">
+            <label for="id_new_password2" class="form-label">Confirmar nueva contraseña</label>
+            {{ form.new_password2 }}
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a href="{% url 'inicio' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
