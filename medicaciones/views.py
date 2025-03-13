@@ -25,3 +25,8 @@ def crear_medicacion(request):
     else:
         form = MedicacionForm()
         return render(request, 'medicaciones/crear_medicacion.html', {'form': form})
+
+@login_required 
+def listar_medicacion(request):
+    medicacion = Medicacion.objects.all()
+    return render (request, "medicaciones/listar_medicacion.html", {"medicaciones": medicacion })

@@ -1,0 +1,29 @@
+{% extends 'usuarios/base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 80px); margin-top: 20px;">
+    <div class="card shadow-lg w-100" style="max-width: 480px;">
+        <div class="card-body">
+            <div class="text-center">
+                <h1 class="card-title h3">Lista de Medicaciones</h1>
+            </div>
+
+            {% if medicaciones %}
+                <ul class="list-group mt-3">
+                    {% for medicacion in medicaciones %}
+                        <li class="list-group-item">
+                            <strong>{{ medicacion.nombre }}</strong> - {{ medicacion.nombre_medicamento }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted text-center mt-3">No hay medicaciones registradas.</p>
+            {% endif %}
+
+            <div class="d-grid mt-4">
+                <a href="{% url 'crear_medicacion' %}" class="btn btn-dark btn-lg">Registrar Nueva Medicación</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
