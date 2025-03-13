@@ -21,6 +21,8 @@ urlpatterns = [
     # URLs de Medicaciones:
     path('medicaciones/crear/', views_medicaciones.crear_medicacion, name='crear_medicacion'),
     path('medicaciones/listar/', views_medicaciones.listar_medicacion, name='listar_medicacion'),
+    path('medicaciones/editar/<int:id>', views_medicaciones.editar_medicacion, name='editar_medicacion'),
+    path('medicaciones/eliminar/<int:id>/', views_medicaciones.eliminar_medicacion, name='eliminar_medicacion'),
     
     # URL para pacientes:
     path('mi_paciente/', views_pacientes.mi_detalle_paciente, name='mi_detalle_paciente'),

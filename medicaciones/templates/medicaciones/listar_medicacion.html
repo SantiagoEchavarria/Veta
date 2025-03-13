@@ -11,8 +11,19 @@
             {% if medicaciones %}
                 <ul class="list-group mt-3">
                     {% for medicacion in medicaciones %}
-                        <li class="list-group-item">
-                            <strong>{{ medicacion.nombre }}</strong> - {{ medicacion.nombre_medicamento }}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                <strong>{{ medicacion.nombre }}</strong>  {{ medicacion.nombre_medicamento }}
+                            </span>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'editar_medicacion' medicacion.id %}" class="btn btn-sm btn-outline-primary">
+                                    Editar
+                                </a>
+                                <a href="{% url 'eliminar_medicacion' medicacion.id %}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar esta medicación?');">
+                                    Eliminar
+                                </a>
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>
