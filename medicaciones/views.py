@@ -36,13 +36,16 @@ def editar_medicacion(request, id):
         if form.is_valid():
             form.save()
             return redirect ('listar_medicacion')
+        else:
+            return render(request, 'medicaciones/editar_medicacion.html', {'form': form, 'form_errors': form.errors})
     else:
         form = MedicacionForm(instance=medicacion)
         return render(request, 'medicaciones/editar_medicacion.html', {'form': form, "medicacion": medicacion})
     
 @login_required 
 def listar_medicacion(request):
-    medicacion = Medicacion.objects.all()
+    paciente = get_object_or_404(Paciente, usuario=request.user)  
+    medicacion = Medicacion.objects.filter(paciente=paciente)
     return render (request, "medicaciones/listar_medicacion.html", {"medicaciones": medicacion })
 
 @login_required

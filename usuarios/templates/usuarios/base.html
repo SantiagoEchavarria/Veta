@@ -28,11 +28,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+
                     <li class="nav-item">
                         <a class="nav-link" href="/">Inicio</a>
                     </li> 
-                    
+
                     {% if request.user.is_authenticated %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/medicaciones/listar/">Medicamentos</a>
+                        </li> 
+
+                              <!-- Campana de notificaciones -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown">
+                                <span class="notification-bell">🔔</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="notificacionesDropdown">
+                                <li class="dropdown-item text-muted">No hay notificaciones</li>
+                            </ul>
+                        </li>
+                            
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                 <img src="{{ request.user.get_gravatar_url }}" class="user-avatar" width="30" height="30">
@@ -51,8 +68,7 @@
                                     <a class="dropdown-item" href="/cerrar_seccion/">Cerrar sesión</a>
                                 </li>
                             </ul>
-                            
-                        </li>
+                        </li>         
                     {% else %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
