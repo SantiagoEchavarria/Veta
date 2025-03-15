@@ -19,7 +19,25 @@ class UsuarioSerializer(serializers.ModelSerializer):
         required=True,
         validators=[validate_password]  # Valida la contraseña según AUTH_PASSWORD_VALIDATORS
     )
+
+    telefono = serializers.CharField(
+        required=True,
+        allow_null=False,
+        error_messages={
+            "required": "El teléfono es obligatorio",
+            "blank": "El teléfono no puede estar vacío"
+        }
+    )
     
+    fecha_nacimiento = serializers.DateField(
+        required=True,
+        allow_null=False,
+        error_messages={
+            "required": "La fecha de nacimiento es obligatoria",
+            "blank": "La fecha no puede estar vacía"
+        }
+    )
+
     # Campo calculado para la URL de Gravatar (solo lectura)
     gravatar_url = serializers.SerializerMethodField(read_only=True)
 
@@ -38,6 +56,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'email': {'required': True},
             'nombre': {'required': True},
+            'telefono': {'required': True},
+            'fecha_nacimiento': {'required': True}
         }
 
     def get_gravatar_url(self, obj):

@@ -38,8 +38,8 @@ class Usuario(AbstractUser):
     username = None
     nombre = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=15, blank=True, null=True)
-    fecha_nacimiento = models.DateField(blank=True, null=True)
+    telefono = models.CharField(max_length=15,verbose_name="Teléfono", help_text="Número de contacto obligatorio")
+    fecha_nacimiento = models.DateField(verbose_name="Fecha de Nacimiento")
 
     objects = UsuarioManager()  # Asigna el gestor personalizado
 
