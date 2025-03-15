@@ -24,4 +24,4 @@ class Paciente(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.nombre
+        return self.email

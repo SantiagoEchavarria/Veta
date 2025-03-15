@@ -100,3 +100,17 @@ def actualizar_contrasena(request):
         form = UsuarioContrasenaForm(user=request.user)
     
     return render(request, 'usuarios/actualizar_contrasena.html', {'form': form})
+
+
+
+#########
+# Serializer
+
+from rest_framework import viewsets
+from .serializer import UsuarioSerializer
+
+class UsuarioView(viewsets.ModelViewSet):
+    serializer_class=UsuarioSerializer
+    queryset=Usuario.objects.all()
+
+

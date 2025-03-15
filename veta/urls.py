@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from usuarios import views as views_usuarios
 from medicaciones import views as views_medicaciones
 from django.contrib.auth import views as auth_views
@@ -28,4 +28,7 @@ urlpatterns = [
     # URL para pacientes:
     path('mi_paciente/', views_pacientes.mi_detalle_paciente, name='mi_detalle_paciente'),
     path('editar_paciente/', views_pacientes.editar_paciente, name='editar_paciente'),
+
+    #URLs del apis rest
+    path('usuarios/', include('usuarios.urls'))
 ]
