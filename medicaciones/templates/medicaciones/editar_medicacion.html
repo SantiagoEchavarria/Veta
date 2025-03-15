@@ -7,6 +7,15 @@
             <div class="text-center">
                 <h1 class="card-title h3">Editar Medicación</h1>
             </div>
+            {% if form_errors %}
+                <div class="alert alert-danger mt-3">
+                    <ul class="mb-0">
+                        {% for field, errors in form_errors.items %}
+                            <li><strong>{{ field }}:</strong> {{ errors.0 }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             
             <form method="post">
                 {% csrf_token %}
@@ -23,7 +32,7 @@
                     {{ form.dosis }}
                 </div>
                 <div class="mb-3">
-                    <label class="form-label text-muted">Frecuencia</label>
+                    <label class="form-label text-muted">Frecuencia (En horas)</label>
                     {{ form.frecuencia }}
                 </div>
                 <div class="d-grid">
