@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import Usuario
+from ..models import Usuario
 
 class UsuarioSerializer(serializers.ModelSerializer):
     # Campo adicional para la contraseña (solo escritura)

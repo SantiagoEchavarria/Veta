@@ -30,5 +30,5 @@ urlpatterns = [
     path('editar_paciente/', views_pacientes.editar_paciente, name='editar_paciente'),
 
     #URLs del apis rest
-    path('usuarios/', include('usuarios.urls'))
+    path('usuarios/', include('usuarios.api.urls'))
 ]
