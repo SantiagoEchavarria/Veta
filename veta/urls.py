@@ -19,6 +19,9 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('actualizar-contrasena/', views_usuarios.actualizar_contrasena, name='actualizar_contrasena'),
     
+    # Incluye las URLs de la API bajo /api/
+    path('api/', include('usuarios.api.urls')),
+    
     # URLs de Medicaciones:
     path('medicaciones/crear/', views_medicaciones.crear_medicacion, name='crear_medicacion'),
     path('medicaciones/listar/', views_medicaciones.listar_medicacion, name='listar_medicacion'),
@@ -29,6 +32,5 @@ urlpatterns = [
     path('mi_paciente/', views_pacientes.mi_detalle_paciente, name='mi_detalle_paciente'),
     path('editar_paciente/', views_pacientes.editar_paciente, name='editar_paciente'),
 
-    #URLs del apis rest
-    path('usuarios/', include('usuarios.api.urls'))
+    
 ]

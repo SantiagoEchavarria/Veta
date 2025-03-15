@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', #Crear apis al instate
     'corsheaders', #Comunicarse con otro backend
+    'django_extensions',
     'coreapi',
     'usuarios',
     'pacientes',
-    'medicaciones'
+    'medicaciones',
 ]
 # 'corsheaders.middleware.CorsMiddleware':
 # Este middleware añade automáticamente los encabezados CORS a las respuestas
@@ -125,6 +126,9 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -150,10 +154,23 @@ EMAIL_HOST_PASSWORD = 'ovll gcso zdfs bnkt'
 # cross-origin a tu API. Esto es esencial cuando el frontend y el backend
 # están en dominios distintos.
 CORS_ALLOWED_ORIGINS = [
-
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 REST_FRAMEWORK = {
     ...: ...,
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
