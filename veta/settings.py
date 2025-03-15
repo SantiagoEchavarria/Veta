@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', #Crear apis al instate
     'corsheaders', #Comunicarse con otro backend
+    'coreapi',
     'usuarios',
     'pacientes',
     'medicaciones'
@@ -151,3 +152,8 @@ EMAIL_HOST_PASSWORD = 'ovll gcso zdfs bnkt'
 CORS_ALLOWED_ORIGINS = [
 
 ]
+
+REST_FRAMEWORK = {
+    ...: ...,
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+}
