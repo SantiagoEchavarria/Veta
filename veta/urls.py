@@ -4,11 +4,14 @@ from usuarios import views as views_usuarios
 from medicaciones import views as views_medicaciones
 from django.contrib.auth import views as auth_views
 from pacientes import views as views_pacientes
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # URLs de Usuarios:
     path('', views_usuarios.inicio, name='inicio'),
+    # Sirve el index.html de React para todas las rutas no API
+    path('', TemplateView.as_view(template_name='index.html')),
     path('crear_seccion/', views_usuarios.crearSeccion, name='crear_seccion'),
     path('iniciar_seccion/', views_usuarios.iniciarSeccion, name='iniciar_seccion'),
     path('cerrar_seccion/', views_usuarios.cerrarSeccion, name='cerrar_seccion'),
@@ -21,7 +24,7 @@ urlpatterns = [
     
     # Incluye las URLs de la API bajo /api/
     path('api/', include('usuarios.api.urls')),
-    
+
     # URLs de Medicaciones:
     path('medicaciones/crear/', views_medicaciones.crear_medicacion, name='crear_medicacion'),
     path('medicaciones/listar/', views_medicaciones.listar_medicacion, name='listar_medicacion'),

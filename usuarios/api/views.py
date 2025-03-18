@@ -1,3 +1,4 @@
+import json
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,6 +8,10 @@ from rest_framework.permissions import AllowAny
 from ..models import Usuario
 from .serializer import UsuarioSerializer
 from .permissions import EsPropietarioOSuperUsuario  # Asegúrate de tener este archivo
+from django.http import JsonResponse
+from rest_framework.decorators import permission_classes, api_view
+
+
 
 # ViewSet para CRUD de usuarios
 class UsuarioViewSet(viewsets.ModelViewSet):
@@ -65,3 +70,29 @@ class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
         return Response({"detail": "Sesión cerrada"}, status=status.HTTP_200_OK)
+    
+def mi_api(request):
+    return JsonResponse({"message": "Hola desde Django!"})
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+
+@ensure_csrf_cookie
+@permission_classes([AllowAny])
+def mi_endpoint(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            return JsonResponse({"status": "success", "data": data})
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+# views.py
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+
+@require_GET
+def csrf(request):
+    return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE")})

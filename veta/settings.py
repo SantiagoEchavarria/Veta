@@ -67,7 +67,7 @@ ROOT_URLCONF = 'veta.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/"mi-app-frontend"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -164,8 +164,11 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+# ¡IMPORTANTE PARA DESARROLLO!
+CSRF_COOKIE_SECURE = False  # Permitir HTTP (no HTTPS)
+CSRF_COOKIE_HTTPONLY = False  # Permitir que Axios lea la cookie
+CSRF_USE_SESSIONS = False
 REST_FRAMEWORK = {
-    ...: ...,
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -174,3 +177,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'mi-app-frontend/dist',
+]
