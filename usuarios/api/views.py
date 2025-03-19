@@ -10,7 +10,8 @@ from .serializer import UsuarioSerializer
 from .permissions import EsPropietarioOSuperUsuario  # Asegúrate de tener este archivo
 from django.http import JsonResponse
 from rest_framework.decorators import permission_classes, api_view
-
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 
 
 # ViewSet para CRUD de usuarios
@@ -96,3 +97,19 @@ from django.views.decorators.http import require_GET
 @require_GET
 def csrf(request):
     return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE")})
+
+class ProfileView(RetrieveUpdateAPIView):
+    serializer_class = UsuarioSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class PasswordResetView(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        # Lógica para enviar correo de recuperación
+        email = request.data.get('email')
+        # Implementa tu lógica aquí
+        return Response({'detail': 'Instrucciones enviadas al correo'})
