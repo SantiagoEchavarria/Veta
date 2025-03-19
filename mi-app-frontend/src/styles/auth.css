@@ -1,0 +1,62 @@
+/* Estilos base */
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.8rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background: #1d4ed8;
+  }
+  
+  .error-message {
+    color: #dc2626;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: #fee2e2;
+    border-radius: 4px;
+  }
+  
+  .auth-links {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+:root {
+    --primary-color: #2563eb;
+    --error-color: #dc2626;
+    --border-radius: 4px;
+}

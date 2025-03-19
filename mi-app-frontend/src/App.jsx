@@ -1,35 +1,20 @@
-import { useEffect } from 'react';
-import api from './api/axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './auth/Login';
+import Register from './auth/Register';
+import Profile from './auth/Profile';
+import PasswordReset from './auth/PasswordReset';
 
 function App() {
-  const initializeCSRF = async () => {
-    try {
-      await api.get('/auth/csrf/');
-      console.log('CSRF token obtenido');
-    } catch (error) {
-      console.error('Error al obtener CSRF:', error);
-    }
-  };
-
-  const sendPostRequest = async () => {
-    try {
-      const response = await api.post('/mi-endpoint/', {
-        nombre: 'Ejemplo'
-      });
-      console.log('Respuesta POST:', response.data);
-    } catch (error) {
-      console.error('Error POST:', error.response?.data);
-    }
-  };
-
-  useEffect(() => {
-    initializeCSRF();
-  }, []);
-
   return (
-    <div>
-      <button onClick={sendPostRequest}>Enviar POST</button>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </Router>
   );
 }
 
