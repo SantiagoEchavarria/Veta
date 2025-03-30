@@ -1,3 +1,5 @@
+import json
+from django.utils.timezone import localtime, is_aware, make_aware
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import MedicionGlucosa
@@ -45,4 +47,23 @@ def eliminar_medicion(request, medicion_id):
     
     return redirect('lista_mediciones')
 
+@login_required
+def grafica_mediciones(request):
+    mediciones = MedicionGlucosa.objects.filter(paciente=request.user).order_by('fecha_hora')
 
+    # Categorías de medición
+    categorias = ["Ayunas", "Postprandial", "Antes de dormir"]
+    
+    # Diccionario para organizar las mediciones por tipo
+    data = {categoria: {"fechas": [], "niveles": []} for categoria in categorias}
+
+    for m in mediciones:
+        tipo = m.tipo_medicion  # Asumiendo que tipo_medicion es un string con estos valores
+        if tipo in data:  # Evita errores en caso de valores inesperados
+            fecha = (localtime(m.fecha_hora) if is_aware(m.fecha_hora) else localtime(make_aware(m.fecha_hora))).strftime("%Y-%m-%d %H:%M")
+            data[tipo]["fechas"].append(fecha)
+            data[tipo]["niveles"].append(float(m.nivel_glucosa))  # Convertimos Decimal a float
+
+    return render(request, 'mediciones/grafica_mediciones.html', {
+        'data_json': json.dumps(data)
+    })

@@ -1,0 +1,44 @@
+{% extends "usuarios/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Gráfica de Mediciones</h2>
+
+    <canvas id="graficaAyunas"></canvas>
+    <canvas id="graficaPostprandial"></canvas>
+    <canvas id="graficaAntesDormir"></canvas>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let data = JSON.parse('{{ data_json|escapejs }}');
+
+    function crearGrafico(id, tipo) {
+        let ctx = document.getElementById(id).getContext("2d");
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: data[tipo].fechas,
+                datasets: [{
+                    label: "Nivel de Glucosa (" + tipo + ")",
+                    data: data[tipo].niveles,
+                    borderColor: "rgb(75, 192, 192)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: "Fecha/Hora" }},
+                    y: { title: { display: true, text: "Nivel de Glucosa (mg/dL)" }}
+                }
+            }
+        });
+    }
+
+    crearGrafico("graficaAyunas", "Ayunas");
+    crearGrafico("graficaPostprandial", "Postprandial");
+    crearGrafico("graficaAntesDormir", "Antes de dormir");
+</script>
+{% endblock %}

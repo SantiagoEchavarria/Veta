@@ -38,5 +38,5 @@ urlpatterns = [
     path('mediciones/registrar', views_mediciones.registrar_medicion, name='registrar_medicion'),
     path('mediciones/editar/<int:medicion_id>/', views_mediciones.editar_medicion, name='editar_medicion'),
     path('mediciones/eliminar/<int:medicion_id>/', views_mediciones.eliminar_medicion, name='eliminar_medicion'),
-
+    path('mediciones/grafica/', views_mediciones.grafica_mediciones, name='grafica_mediciones'),
     ]
