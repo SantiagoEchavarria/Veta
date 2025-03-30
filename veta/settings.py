@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'pacientes',
     'medicaciones',
     'mediciones',
+    'alertas',
+    
 ]
 # 'corsheaders.middleware.CorsMiddleware':
 # Este middleware añade automáticamente los encabezados CORS a las respuestas

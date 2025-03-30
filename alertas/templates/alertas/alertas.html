@@ -1,0 +1,45 @@
+{% extends 'usuarios/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Alertas de Medicación</h2>
+    <p>Las alertas se generan automáticamente cuando llega la hora de la medicación.</p>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Lista de Alertas</h5>
+            <ul id="alertas-lista" class="list-group">
+                {% for alerta in alertas %}
+                    <li class="list-group-item">{{ alerta.mensaje }} - {{ alerta.fecha_creacion|date:"H:i d/m/Y" }}</li>
+                {% empty %}
+                    <li class="list-group-item">No hay alertas pendientes.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    function actualizarAlertas() {
+        fetch("{% url 'api_alertas' %}")  // Ruta de la API que devuelve las alertas en JSON
+            .then(response => response.json())
+            .then(data => {
+                let lista = document.getElementById("alertas-lista");
+                lista.innerHTML = "";
+                
+                if (data.alertas.length === 0) {
+                    lista.innerHTML = "<li class='list-group-item'>No hay alertas pendientes.</li>";
+                } else {
+                    data.alertas.forEach(alerta => {
+                        let item = document.createElement("li");
+                        item.classList.add("list-group-item");
+                        item.textContent = `${alerta.mensaje} - ${new Date(alerta.fecha_creacion).toLocaleString()}`;
+                        lista.appendChild(item);
+                    });
+                }
+            });
+    }
+    
+    setInterval(actualizarAlertas, 60000);  // Actualizar cada minuto
+</script>
+{% endblock %}

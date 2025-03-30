@@ -5,6 +5,7 @@ from medicaciones import views as views_medicaciones
 from django.contrib.auth import views as auth_views
 from pacientes import views as views_pacientes
 from mediciones import views as views_mediciones
+from alertas import views as views_alertas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,4 +40,8 @@ urlpatterns = [
     path('mediciones/editar/<int:medicion_id>/', views_mediciones.editar_medicion, name='editar_medicion'),
     path('mediciones/eliminar/<int:medicion_id>/', views_mediciones.eliminar_medicion, name='eliminar_medicion'),
     path('mediciones/grafica/', views_mediciones.grafica_mediciones, name='grafica_mediciones'),
+    
+    #URLs para alertas
+    path("alertas/", views_alertas.vista_alertas, name="vista_alertas"),
+    path("api/alertas/", views_alertas.api_alertas, name="api_alertas"),
     ]

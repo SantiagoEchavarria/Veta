@@ -1,20 +1,69 @@
 {% extends "usuarios/base.html" %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-3">
-        {% if medicion %}Editar{% else %}Registrar Nueva{% endif %} Medición
-    </h2>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 80px); margin-top: 20px;">
+    <div class="card shadow-lg w-100" style="max-width: 480px;">
+        <div class="card-body">
+            <div class="text-center">
+                <h1 class="card-title h3">{% if medicion %}Editar{% else %}Registrar Nueva{% endif %} Medición</h1>
+            </div>
+            
+            {% if form_errors %}
+                <div class="alert alert-danger mt-3">
+                    <ul class="mb-0">
+                        {% for field, errors in form_errors.items %}
+                            <li><strong>{{ field }}:</strong> {{ errors.0 }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Paciente</label>
+                        <input type="text" class="form-control" value="{{ request.user.nombre }}" readonly>
+                    </div>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+                    <div class="mb-3">
+                        <label for="id_nivel_glucosa" class="form-label text-muted">Nivel de Glucosa</label>
+                        <input type="number" step="0.1" name="nivel_glucosa" id="id_nivel_glucosa" class="form-control" value="{{ form.nivel_glucosa.value }}" required>
+                    </div>
 
-        <button type="submit" class="btn btn-success">
-            {% if medicion %}Guardar Cambios{% else %}Guardar{% endif %}
-        </button>
+                    <div class="mb-3">
+                        <label for="id_fecha_hora" class="form-label text-muted">Fecha y Hora</label>
+                        <input type="datetime-local" name="fecha_hora" id="id_fecha_hora" class="form-control" value="{{ form.fecha_hora.value|date:'Y-m-d\TH:i' }}" required>
+                    </div>
 
-        <a href="{% url 'lista_mediciones' %}" class="btn btn-secondary">Volver</a>
-    </form>
+                    <div class="mb-3">
+                        <label for="id_tipo_medicion" class="form-label text-muted">Tipo de Medición</label>
+                        <select name="tipo_medicion" id="id_tipo_medicion" class="form-select" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Ayunas" {% if form.tipo_medicion.value == "Ayunas" %}selected{% endif %}>Ayunas</option>
+                            <option value="Postprandial" {% if form.tipo_medicion.value == "Postprandial" %}selected{% endif %}>Postprandial</option>
+                            <option value="Antes de dormir" {% if form.tipo_medicion.value == "Antes de dormir" %}selected{% endif %}>Antes de Dormir</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_notas" class="form-label text-muted">Notas</label>
+                        <textarea name="notas" id="id_notas" class="form-control" rows="3">{{ form.notas.value }}</textarea>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark btn-lg">
+                            {% if medicion %}Guardar Cambios{% else %}Guardar{% endif %}
+                        </button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="{% url 'lista_mediciones' %}" class="btn btn-gray btn-lg">Ver listado de mediciones</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
