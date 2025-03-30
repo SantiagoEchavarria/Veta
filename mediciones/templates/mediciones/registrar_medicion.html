@@ -1,0 +1,20 @@
+{% extends "usuarios/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">
+        {% if medicion %}Editar{% else %}Registrar Nueva{% endif %} Medición
+    </h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-success">
+            {% if medicion %}Guardar Cambios{% else %}Guardar{% endif %}
+        </button>
+
+        <a href="{% url 'lista_mediciones' %}" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+{% endblock %}

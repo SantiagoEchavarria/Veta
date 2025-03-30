@@ -130,6 +130,20 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-pills me-1"></i>Mediciones
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'lista_mediciones' %}">
+                                    <i class="fas fa-list me-2"></i>Listar Mediciones
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'registrar_medicion' %}">
+                                    <i class="fas fa-plus-circle me-2"></i>Nueva medicion
+                                </a></li>
+                            </ul>
+                        </li>
+
                         <!-- Notificaciones -->
                         <li class="nav-item dropdown mx-2">
                             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">

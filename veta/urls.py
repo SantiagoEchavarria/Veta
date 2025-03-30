@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from usuarios import views as views_usuarios
 from medicaciones import views as views_medicaciones
 from django.contrib.auth import views as auth_views
 from pacientes import views as views_pacientes
+from mediciones import views as views_mediciones
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +32,11 @@ urlpatterns = [
     # URL para pacientes:
     path('mi_paciente/', views_pacientes.mi_detalle_paciente, name='mi_detalle_paciente'),
     path('editar_paciente/', views_pacientes.editar_paciente, name='editar_paciente'),
-
     
-]
+    # URLs para mediciones
+    path('mediciones/listar', views_mediciones.lista_mediciones, name='lista_mediciones'),
+    path('mediciones/registrar', views_mediciones.registrar_medicion, name='registrar_medicion'),
+    path('mediciones/editar/<int:medicion_id>/', views_mediciones.editar_medicion, name='editar_medicion'),
+    path('mediciones/eliminar/<int:medicion_id>/', views_mediciones.eliminar_medicion, name='eliminar_medicion'),
+
+    ]
