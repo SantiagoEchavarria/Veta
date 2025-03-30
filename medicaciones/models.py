@@ -9,4 +9,4 @@ class Medicacion(models.Model):
     hora_inicio = models.TimeField(null=True, blank=True, help_text="Hora en la que se debe tomar la primera dosis")
 
     def __str__(self):
-        return f"{self.nombre_medicamento} - {self.paciente.usuario.username}"
+        return f"{self.nombre_medicamento} - {self.paciente.nombre}"
