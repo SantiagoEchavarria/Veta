@@ -9,7 +9,17 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
-                    {% include 'usuarios/components/auth_components/authenticated_menu.html' %}
+                    <!-- Menú Principal -->
+                    {% include 'usuarios/components/auth_components/authenticated_menu.html' %}                    
+                    <!-- Notificaciones -->
+                    <li class="nav-item dropdown mx-2">
+                        {% include 'usuarios/components/auth_components/notificaciones.html' %}
+                    </li>
+                    
+                    <!-- Perfil de Usuario -->
+                    <li class="nav-item dropdown">
+                        {% include 'usuarios/components/auth_components/perfil_usuario.html' %}
+                    </li>
                 {% else %}
                     {% include 'usuarios/components/auth_components/unauthenticated_menu.html' %}
                 {% endif %}

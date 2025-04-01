@@ -1,0 +1,21 @@
+<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+    <img src="{{ request.user.get_gravatar_url }}" class="user-avatar">
+</a>
+<ul class="dropdown-menu dropdown-menu-end">
+    <li class="text-center py-3">
+        <img src="{{ request.user.get_gravatar_url }}" class="user-avatar mb-2" width="80" height="80">
+        <h6 class="mb-0 fw-bold">{{ request.user.nombre }}</h6>
+        <small class="text-muted">{{ request.user.email }}</small>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="/editar_seccion">
+        <i class="fas fa-user-edit me-2"></i>Editar Perfil
+    </a></li>
+    <li><a class="dropdown-item" href="/actualizar-contrasena">
+        <i class="fas fa-lock me-2"></i>Cambiar Contraseña
+    </a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item text-danger" href="/cerrar_seccion/">
+        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+    </a></li>
+</ul>
