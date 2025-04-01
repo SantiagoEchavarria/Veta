@@ -86,6 +86,10 @@
             right: -5px;
             font-size: 0.7rem;
         }
+        .footer {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -157,17 +161,39 @@
                         <li class="nav-item dropdown mx-2">
                             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-bell notification-bell"></i>
-                                <span class="badge bg-danger badge-notification">3</span>
+                                {% if alertas %}
+                                    <span class="badge bg-danger badge-notification">{{ alertas|length }}</span>
+                                {% endif %}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><h6 class="dropdown-header">Notificaciones Recientes</h6></li>
-                                <li><a class="dropdown-item" href="#">Nuevo mensaje</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-center text-primary" href="#">
-                                    Ver todas
-                                </a></li>
+                                
+                                {% if alertas %}
+                                    {% for alerta in alertas %}
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="me-2">
+                                                    {% if alerta.tipo == 'error' %}
+                                                        <i class="fas fa-exclamation-circle text-danger"></i>
+                                                    {% elif alerta.tipo == 'warning' %}
+                                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-info-circle text-primary"></i>
+                                                    {% endif %}
+                                                </div>
+                                                <span>{{ alerta.mensaje }}</span>
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li><p class="dropdown-item text-muted text-center">No hay notificaciones</p></li>
+                                {% endif %}
+                                
+                                <li><a class="dropdown-item text-center text-primary" href="/alertas">Ver todas</a></li>
                             </ul>
                         </li>
+
 
                         <!-- Perfil de Usuario -->
                         <li class="nav-item dropdown">
@@ -218,6 +244,8 @@
     <!-- Contenido principal -->
     <div class="container mt-4">
         {% block content %}
+
+
         {% endblock %}
     </div>
 
@@ -234,5 +262,9 @@
             });
         });
     </script>
+
+    <footer class="footer text-white text-center py-3">
+        <p>&copy; 2025.</p>
+    </footer>
 </body>
 </html>

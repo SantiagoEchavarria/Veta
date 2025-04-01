@@ -1,6 +1,5 @@
-{% extends 'usuarios/base.html'%}
+{% extends 'usuarios/base.html' %}
 {% block content %}
-<h1>Home</h1>
 
 {% if mostrar_modal %}
 <div class="modal fade" id="primerInicioModal" tabindex="-1" aria-labelledby="primerInicioModalLabel" aria-hidden="true">
@@ -28,5 +27,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 {% endif %}
+
+<div class="content d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row">
+        <div class="col-md-8">
+            .col-md-8
+        </div>
+        <div class="col-md-4">
+            .col-md-4
+        </div>
+    </div>
+</div>
 
 {% endblock %}

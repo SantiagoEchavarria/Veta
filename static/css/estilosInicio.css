@@ -1,0 +1,111 @@
+.main-content {
+    margin-top: 80px; /* Ajusta según la altura de tu navbar */
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Resta la altura del navbar */
+}
+
+.auth-container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px;
+}
+
+.titulo-glucosa {
+    color: #D9534F;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.descripcion-glucosa {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.switch-container {
+    position: relative;
+    width: 220px;
+    height: 50px;
+    margin: 0 auto 30px;
+    border-radius: 25px;
+    background: #f0f0f0;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.switch-option {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.switch-option.left {
+    left: 0;
+}
+
+.switch-option.right {
+    right: 0;
+}
+
+.switch-option.active {
+    color: white;
+}
+
+.slider {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: #007BFF;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    left: 0;
+    z-index: 0;
+}
+
+.slider.right {
+    left: 50%;
+}
+
+.btn {
+    display: inline-block;
+    background: #007BFF;
+    color: white;
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.btn:hover {
+    background: #0069d9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
