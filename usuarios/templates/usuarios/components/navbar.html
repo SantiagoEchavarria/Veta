@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-heartbeat me-2"></i>VETA
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if request.user.is_authenticated %}
+                    {% include 'usuarios/components/auth_components/authenticated_menu.html' %}
+                {% else %}
+                    {% include 'usuarios/components/auth_components/unauthenticated_menu.html' %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
