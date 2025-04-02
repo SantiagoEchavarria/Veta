@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.http import HttpResponse
 from django.utils import timezone
@@ -68,23 +68,24 @@ def cerrarSeccion(request):
 
 @login_required
 def editarSeccion(request):
-    usuario = request.user  
-
+    usuario = get_object_or_404(Usuario, pk=request.user.pk)
+    
     if request.method == 'POST':
         form = UsuarioUpdateForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            return redirect('inicio')  
+            return redirect('inicio')
         else:
+            # Pasar el formulario con errores y los datos ingresados
             return render(request, 'usuarios/editar_seccion.html', {
                 'form': form,
-                'error': 'Error al actualizar la información',
-                'form_errors': form.errors
+                'errores_detallados': form.errors.items()  # Envía los errores detallados
             })
     else:
         form = UsuarioUpdateForm(instance=usuario)
-        return render(request, 'usuarios/editar_seccion.html', {'form': form})
     
+    return render(request, 'usuarios/editar_seccion.html', {'form': form})
+
 @login_required
 def actualizar_contrasena(request):
     if request.method == 'POST':

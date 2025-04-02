@@ -1,96 +1,81 @@
 {% extends 'usuarios/base.html' %}
 {% block content %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Perfil de Usuario</h1>
+            {% if error %}
+            <div class="auth-error">{{ error }}</div>
+            {% endif %}
+        </div>
 
-<div class="bg-light">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <!-- Main Content -->
-            <div class="col-12 col-md-8 col-lg-6">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-0 d-flex flex-column justify-content-center align-items-center">
-                        <div class="row g-0 w-100">
-                            <!-- Content Area -->
-                            <div class="col-12">
-                                <div class="p-4 w-100">
-                                    <!-- Personal Information -->
-                                    <div class="mb-4">
-                                        <h5 class="mb-4 text-center font-weight-bold">Información personal</h5>
-                                        {{ error }}
-                                        <form method="post">
-                                            {% csrf_token %}
-                                            <div class="row g-3">
-                                                {% for field in form %}
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="form-label fw-bold">{{ field.label }}</label>
-                                                        {% if field.name == 'fecha_nacimiento' %}
-                                                            <input type="date" 
-                                                                   name="{{ field.name }}" 
-                                                                   class="form-control p-2 border-1 border-secondary rounded" 
-                                                                   value="{{ field.value|date:'Y-m-d' }}"
-                                                                   style="height: 40px;">
-                                                        {% else %}
-                                                            <input type="{{ field.field.widget.input_type }}" 
-                                                                   name="{{ field.name }}" 
-                                                                   class="form-control p-2 border-1 border-secondary rounded" 
-                                                                   value="{{ field.value|default:'' }}"
-                                                                   style="height: 40px;">
-                                                        {% endif %}
-                                                        {% if field.errors %}
-                                                            <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
-                                                        {% endif %}
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
+        <form class="auth-form" method="post">
+            {% csrf_token %}
+            
+            <!-- Información Personal -->
+            <div class="auth-section">
+                <h5 class="section-title">Información personal</h5>
+                
+                <div class="auth-input-group">
+                    <label class="input-label">Nombre completo</label>
+                    <input type="text" 
+                           class="auth-input"
+                           name="nombre"
+                           pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" 
+                           value="{{ form.nombre.value|default:'' }}"
+                           required>
+                </div>
 
-                                            <!-- Settings Cards -->
-                                            <div class="row g-4 mt-4">
-                                                <div class="col-md-12">
-                                                    <div class="settings-card card border-secondary">
-                                                        <div class="card-body">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <div>
-                                                                    <h6 class="mb-1">Notificaciones por Email</h6>
-                                                                    <p class="text-muted mb-0 small">Recibir actualizaciones de actividad</p>
-                                                                </div>
-                                                                <div class="form-check form-switch">
-                                                                    <input class="form-check-input" type="checkbox" checked style="width: 3em; height: 1.5em;">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mt-4 text-center">
-                                                <button type="submit" class="btn btn-danger px-4 py-2">Guardar cambios</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="auth-input-group">
+                    <label class="input-label">Correo electrónico</label>
+                    <input type="email" 
+                           class="auth-input"
+                           name="email"
+                           value="{{ form.email.value|default:'' }}"
+                           required>
+                </div>
+
+                <div class="auth-input-group">
+                    <label class="input-label">Teléfono</label>
+                    <input type="tel" 
+                           class="auth-input"
+                           name="telefono"
+                           value="{{ form.telefono.value|default:'' }}"
+                           required>
+                </div>
+
+                <div class="auth-input-group">
+                    <label class="input-label">Fecha de nacimiento</label>
+                    <input type="date" 
+                           class="auth-input"
+                           name="fecha_nacimiento"
+                           value="{% firstof form.fecha_nacimiento.value|date:'Y-m-d' request.POST.fecha_nacimiento %}"
+                           required>
+                </div>
+            </div>
+
+            <!-- Configuración de Notificaciones -->
+            <div class="auth-section">
+                <div class="settings-card">
+                    <div class="setting-item">
+                        <div class="setting-content">
+                            <h6 class="setting-title">Notificaciones por Email</h6>
+                            <p class="setting-description">Recibir actualizaciones de actividad</p>
                         </div>
+                        <label class="auth-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <button type="submit" class="auth-button">
+                <span class="button-text">Guardar cambios</span>
+                <i class="fas fa-save button-icon"></i>
+            </button>
+        </form>
     </div>
 </div>
-
-<style>
-    .form-control {
-        border: 1px solid #6c757d !important;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-    .form-control:focus {
-        border-color: #dc3545 !important;
-        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-    }
-    .card {
-        border-radius: 0.5rem;
-    }
-    .settings-card {
-        border-radius: 0.5rem;
-    }
-</style>
 
 {% endblock %}

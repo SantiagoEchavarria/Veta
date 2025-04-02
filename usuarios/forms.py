@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,  PasswordChangeForm
 from .models import Usuario
@@ -18,8 +19,9 @@ class UsuarioUpdateForm(forms.ModelForm):
     # Validación para el campo nombre
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre')
-        if not nombre.isalpha():
-            raise ValidationError("El nombre solo puede contener letras.")
+        # Permitir letras, espacios y caracteres acentuados
+        if not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$', nombre):
+            raise ValidationError("El nombre solo puede contener letras y espacios.")
         return nombre
     
     # Validación para el campo email
