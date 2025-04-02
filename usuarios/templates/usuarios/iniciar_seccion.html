@@ -1,52 +1,54 @@
 {% extends 'usuarios/base.html' %}
 {% block content %}
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-header">
-            <h1 class="auth-title">Iniciar sesión</h1>
-            {% if error %}
-            <div class="auth-error">{{ error }}</div>
-            {% endif %}
+<div class="auth-background">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">Iniciar sesión</h1>
+                {% if error %}
+                <div class="auth-error">{{ error }}</div>
+                {% endif %}
+            </div>
+    
+            <form class="auth-form" action="/iniciar_seccion/" method="POST">
+                {% csrf_token %}
+                
+                <div class="auth-input-group">
+                    <label class="input-label"></label>
+                    <input type="text" 
+                           class="auth-input"
+                           name="username"
+                           placeholder="Correo Electrónico"
+                           required
+                           autofocus>
+                </div>
+                
+                <div class="auth-input-group">
+                    <label class="input-label"></label>
+                    <input type="password" 
+                           class="auth-input"
+                           name="password"
+                           placeholder="Contraseña"
+                           required>
+                </div>
+                
+                <button type="submit" class="auth-button">
+                    <span class="button-text">Acceder</span>
+                    <i class="fas fa-arrow-right button-icon"></i>
+                </button>
+                
+                <p class="text-center mt-4">
+                    ¿Nuevo usuario? 
+                    <a href="{% url 'crear_seccion' %}" class="link-primary">Crea una cuenta</a>
+                </p>
+                
+                <div class="auth-links">
+                    <a href="{% url 'password_reset' %}" class="link-secondary">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+            </form>
         </div>
-
-        <form class="auth-form" action="/iniciar_seccion/" method="POST">
-            {% csrf_token %}
-            
-            <div class="auth-input-group">
-                <label class="input-label"></label>
-                <input type="text" 
-                       class="auth-input"
-                       name="username"
-                       placeholder="Correo Electrónico"
-                       required
-                       autofocus>
-            </div>
-            
-            <div class="auth-input-group">
-                <label class="input-label"></label>
-                <input type="password" 
-                       class="auth-input"
-                       name="password"
-                       placeholder="Contraseña"
-                       required>
-            </div>
-            
-            <button type="submit" class="auth-button">
-                <span class="button-text">Acceder</span>
-                <i class="fas fa-arrow-right button-icon"></i>
-            </button>
-            
-            <p class="text-center mt-4">
-                ¿Nuevo usuario? 
-                <a href="{% url 'crear_seccion' %}" class="link-primary">Crea una cuenta</a>
-            </p>
-            
-            <div class="auth-links">
-                <a href="{% url 'password_reset' %}" class="link-secondary">
-                    ¿Olvidaste tu contraseña?
-                </a>
-            </div>
-        </form>
     </div>
 </div>
 {% endblock %}
