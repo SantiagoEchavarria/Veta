@@ -31,7 +31,6 @@
     color: var(--primary-color);
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    text-shadow: 2px 2px var(--shadow-color);
 }
 
 .auth-input-group {
@@ -69,7 +68,7 @@
     color: white;
     border: none;
     border-radius: var(--border-radius);
-    box-shadow: 4px 4px var(--font-color-sub);
+    box-shadow: 4px 4px var(--secondary-color);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -84,7 +83,7 @@
 }
 
 .auth-button:active {
-    box-shadow: 0 0 var(--font-color-sub);
+    box-shadow: 0 0 var(--secondary-color);
     transform: translate(3px, 3px);
 }
 
@@ -95,4 +94,20 @@
 
 .auth-button:hover .button-icon {
     transform: translateX(3px);
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    
+}
+
+.auth-links .link-secondary {  
+    color: #000000; 
+    border-bottom: 2px dotted rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+}
+
+.auth-links .link-secondary:hover {
+    color: #000000;
+    border-bottom: 2px solid var(--accent-color);
 }

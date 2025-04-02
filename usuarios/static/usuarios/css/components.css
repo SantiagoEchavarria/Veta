@@ -1,0 +1,125 @@
+/* ========== ESTILOS BASE PARA ENLACES ========== */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+/* ========== VARIANTES DE ENLACES ========== */
+/* Enlace principal (para acciones importantes) */
+.link-primary {
+    color: var(--primary-color);
+    padding: 0.3rem 0;
+    display: inline-block;
+}
+
+.link-primary::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.link-primary:hover {
+    color: var(--primary-color);
+}
+
+.link-primary:hover::after {
+    width: 100%;
+}
+
+.link-secondary {
+    color: #000000 !important; 
+    font-weight: 500;
+}
+
+.link-secondary:hover {
+    color: #000000 !important;
+    border-bottom: solid var(--accent-color) !important;
+}
+
+/* Enlace con ícono */
+.link-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.link-icon i {
+    transition: transform 0.3s ease;
+}
+
+.link-icon:hover {
+    background: rgba(var(--primary-color-rgb), 0.2);
+    box-shadow: 2px 2px var(--shadow-size) rgba(0,0,0,0.1);
+}
+
+.link-icon:hover i {
+    transform: translateX(3px);
+}
+
+/* Enlace tipo botón */
+.link-button {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--border-radius);
+    background: var(--primary-color);
+    color: white !important;
+    box-shadow: var(--shadow-size) var(--shadow-size) var(--font-color-sub);
+    transition: all 0.3s ease;
+}
+
+.link-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px var(--font-color-sub);
+}
+
+/* Enlace con efecto gradiente */
+.link-gradient {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+.link-gradient:hover {
+    animation: gradient-shift 1.5s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/*
+Ejemplo de usos:
+<p class="auth-links">
+    ¿No tienes cuenta? 
+    <a href="{% url 'crear_seccion' %}" class="link-primary">Regístrate aquí</a>
+</p>
+
+<a href="#" class="link-icon">
+    <i class="fas fa-arrow-right"></i>
+    Ver más detalles
+</a>
+
+<a href="#" class="link-button">Crear nueva sección</a>
+
+<h3>
+    ¿Necesitas ayuda? 
+    <a href="#" class="link-gradient">Contáctanos</a>
+</h3>
+
+*/
