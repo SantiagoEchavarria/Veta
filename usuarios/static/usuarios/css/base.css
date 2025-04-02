@@ -1,15 +1,36 @@
 :root {
+    /* Paleta original mejorada */
     --primary-color: #2A5C82;
     --secondary-color: #5BA4E6;
     --accent-color: #FF6B6B;
+    
+    /* Variables del nuevo estilo */
+    --input-focus: #f02df0;
+    --font-color: #323232;
+    --font-color-sub: #666;
+    --bg-color: #fff;
+    --bg-color-alt: #666;
+    --main-color: var(--primary-color); /* Unificamos con tu color primario */
+    
+    /* Sombras unificadas */
+    --shadow-size: 4px;
+    --shadow-color: var(--main-color);
+    
+    /* Bordes */
+    --border-radius: 5px;
+    --border-width: 2px;
+}
+* {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #f8f9fa;
+    background: var(--bg-color);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    margin: 0;
 }
 
 .footer {
