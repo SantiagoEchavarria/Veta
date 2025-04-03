@@ -54,3 +54,24 @@
 body {
     padding-top:6rem;
 }
+
+/* Ancho de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 9px; 
+}
+
+/* Color de fondo del track (pista) de la barra */
+::-webkit-scrollbar-track {
+    background: wheat;
+}
+
+/* Color de la barra en sí (thumb) */
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color); 
+    border-radius: 2px;
+}
+
+/* Cambiar el color cuando el usuario pasa el mouse */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color); 
+}
