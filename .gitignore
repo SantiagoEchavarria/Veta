@@ -1,2 +1,4 @@
 # Ignorar el entorno virtual
 venv/
+service-account.json
+*.key
