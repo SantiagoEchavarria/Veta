@@ -5,18 +5,17 @@
         <div class="auth-card">
             <div class="auth-header">
                 <h1 class="auth-title">Crear usuario</h1>
-                {% if error %}
-                <div class="auth-error">{{ error }}</div>
-                {% endif %}
-                {% if form_errors %}
+                {% if form.errors %}
                 <div class="auth-error">
                     <ul class="error-list">
-                        {% for field, errors in form_errors.items %}
-                        <li><strong>{{ field|title }}:</strong> {{ errors.0 }}</li>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li> {{ field|title }}: {{ error }}</li>
+                            {% endfor %}
                         {% endfor %}
                     </ul>
                 </div>
-                {% endif %}
+            {% endif %}
             </div>
     
             <form class="auth-form" method="post">
@@ -29,6 +28,7 @@
                            name="nombre"
                            id="id_nombre"
                            placeholder="Nombre"
+                           value="{{form.nombre.value|default:''}}"
                            required>
                 </div>
                 
@@ -39,6 +39,7 @@
                            name="email"
                            id="id_email"
                            placeholder="Correo electrónico"
+                           value="{{form.email.value|default:''}}"
                            required>
                 </div>
                 
@@ -49,6 +50,7 @@
                            name="telefono"
                            id="id_telefono"
                            placeholder="Teléfono"
+                           value="{{form.telefono.value|default:''}}"
                            required>
                 </div>
                 
@@ -59,6 +61,7 @@
                            name="fecha_nacimiento"
                            id="id_fecha_nacimiento"
                            placeholder="Fecha de nacimiento"
+                           value="{% firstof form.fecha_nacimiento.value|date:'Y-m-d' request.POST.fecha_nacimiento %}"
                            required>
                 </div>
                 

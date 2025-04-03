@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 import hashlib
-
+from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
+from django.utils.translation import gettext_lazy as _
 
 class UsuarioManager(BaseUserManager):
     use_in_migrations = True
@@ -34,12 +35,41 @@ class UsuarioManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractUser):
+    nombre_validator = RegexValidator(
+        regex=r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,}(?: [a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+){1,}$',
+        message=_('El nombre debe contener solo letras y espacios, con al menos nombre y apellido')
+    )
+    
+    telefono_validator = RegexValidator(
+        regex=r'^\+?[0-9]{10,15}$',
+        message=_('Formato de teléfono inválido. Use entre 10 y 15 dígitos')
+    )
+
     primera_vez = models.BooleanField(default=True)
     username = None
-    nombre = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=15,verbose_name="Teléfono", help_text="Número de contacto obligatorio")
-    fecha_nacimiento = models.DateField(verbose_name="Fecha de Nacimiento")
+    nombre = models.CharField(
+        max_length=100,
+        validators=[nombre_validator],
+        verbose_name=_('Nombre completo'),
+        help_text=_('Nombre y apellido separados por espacios')
+    )
+    email = models.EmailField(
+        unique=True,
+        verbose_name=_('Correo electrónico'),
+        error_messages={
+            'unique': _('Este correo electrónico ya está registrado')
+        }
+    )
+    telefono = models.CharField(
+        max_length=15,
+        validators=[telefono_validator],
+        verbose_name=_("Teléfono"),
+        help_text=_("Número de contacto con código de país. Ej: +573001234567")
+    )
+    fecha_nacimiento = models.DateField(
+        verbose_name=_("Fecha de Nacimiento"),
+        help_text=_("Formato: DD/MM/AAAA")
+    )
 
     objects = UsuarioManager()  # Asigna el gestor personalizado
 

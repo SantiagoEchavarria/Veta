@@ -1,3 +1,4 @@
+from venv import logger
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.http import HttpResponse
@@ -7,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Usuario  
 from .forms import UsuarioCreationForm, UsuarioUpdateForm, UsuarioContrasenaForm
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 
 # Vista de inicio
 def inicio(request):
@@ -14,25 +16,26 @@ def inicio(request):
     return render(request, 'usuarios/inicio.html', {'mostrar_modal': mostrar_modal})
 
 # Vista para registrar usuario
+from django.contrib.auth import login
+
 def crearSeccion(request):
-    if request.method == 'GET': 
-        return render(request, 'usuarios/crear_seccion.html', {
-            'form': UsuarioCreationForm()
-        })
-    else:
+    if request.method == 'POST':
         form = UsuarioCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password1'])  
+            user.set_password(form.cleaned_data['password1'])
             user.save()
             login(request, user)
             return redirect('inicio')
-        else:
-            return render(request, 'usuarios/crear_seccion.html', {
-                'form': form,
-                'error': 'Error en el formulario',
-                'form_errors': form.errors
-            })
+        # Mantener los datos en caso de error
+        return render(request, 'usuarios/crear_seccion.html', {
+            'form': form  # Pasar el formulario con errores y datos
+        })
+    
+    # GET request: mostrar formulario vacío
+    return render(request, 'usuarios/crear_seccion.html', {
+        'form': UsuarioCreationForm()
+    })
 
 # Vista para iniciar sesión
 def iniciarSeccion(request):
@@ -68,23 +71,18 @@ def cerrarSeccion(request):
 
 @login_required
 def editarSeccion(request):
-    usuario = get_object_or_404(Usuario, pk=request.user.pk)
-    
+    usuario = request.user
     if request.method == 'POST':
         form = UsuarioUpdateForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
             return redirect('inicio')
-        else:
-            # Pasar el formulario con errores y los datos ingresados
-            return render(request, 'usuarios/editar_seccion.html', {
-                'form': form,
-                'errores_detallados': form.errors.items()  # Envía los errores detallados
-            })
     else:
         form = UsuarioUpdateForm(instance=usuario)
     
-    return render(request, 'usuarios/editar_seccion.html', {'form': form})
+    return render(request, 'usuarios/editar_seccion.html', {
+        'form': form  
+    })
 
 @login_required
 def actualizar_contrasena(request):

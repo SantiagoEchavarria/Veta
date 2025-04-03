@@ -4,8 +4,16 @@
     <div class="auth-card">
         <div class="auth-header">
             <h1 class="auth-title">Perfil de Usuario</h1>
-            {% if error %}
-            <div class="auth-error">{{ error }}</div>
+            {% if form.errors %}
+            <div class="auth-error">
+                <ul class="error-list">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li> {{ field|title }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
             {% endif %}
         </div>
 
@@ -16,16 +24,17 @@
             <div class="auth-section">
                 <h5 class="section-title">Información personal</h5>
                 
+                <!-- Campo Nombre -->
                 <div class="auth-input-group">
                     <label class="input-label">Nombre completo</label>
                     <input type="text" 
                            class="auth-input"
                            name="nombre"
-                           pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" 
                            value="{{ form.nombre.value|default:'' }}"
                            required>
                 </div>
 
+                <!-- Campo Email -->
                 <div class="auth-input-group">
                     <label class="input-label">Correo electrónico</label>
                     <input type="email" 
@@ -35,6 +44,7 @@
                            required>
                 </div>
 
+                <!-- Campo Teléfono -->
                 <div class="auth-input-group">
                     <label class="input-label">Teléfono</label>
                     <input type="tel" 
@@ -44,6 +54,7 @@
                            required>
                 </div>
 
+                <!-- Campo Fecha de Nacimiento -->
                 <div class="auth-input-group">
                     <label class="input-label">Fecha de nacimiento</label>
                     <input type="date" 
@@ -53,7 +64,6 @@
                            required>
                 </div>
             </div>
-
             <!-- Configuración de Notificaciones -->
             <div class="auth-section">
                 <div class="settings-card">
