@@ -1,18 +1,153 @@
 {% extends "usuarios/base.html" %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2>Gráfica de Mediciones</h2>
+<div class="container py-4">
+    <h1 class="text-center mb-4">Graficas</h1>
+    <div class="row">
 
-    <canvas id="graficaAyunas"></canvas>
-    <canvas id="graficaPostprandial"></canvas>
-    <canvas id="graficaAntesDormir"></canvas>
+        <div class="col-md-3">
+            <h3 class="mb-4">Datos</h3>
+            <div class="row g-4">
 
+                <div class="col-xl-12 col-md-12">
+                    <div class="card stats-card card-hover-primary shadow-sm card-hover-animation">
+                        <div class="text-center">
+                            <div class="position-relative d-inline-block">
+                                <img src="{{ request.user.get_gravatar_url }}" class="rounded-circle profile-pic" alt="Profile Picture">
+                                
+                            </div>
+                            <h3 class="mt-3 mb-3">{{ paciente.nombre }}</h3>
+                            
+                            <div class="d-flex flex-column align-items-center mb-3">
+                                <p class="text-muted mb-1">Email: {{ paciente.usuario.email }}</p>
+                                <p class="text-muted mb-1">Tipo de diabetes: {{ paciente.tipo_diabetes }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12 col-md-12">
+                    <div class="card stats-card card-hover-warning shadow-sm card-hover-animation">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="dashboard-card">
+                                    <div class="text-muted text-uppercase fw-bold small">Distribución de Mediciones</div>
+                                    <canvas id="graficoCircular" class="canvas-hover-animation" style="max-width: 100%; height: auto;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <!-- Mediciones en Ayunas -->
+                <div class="col-xl-12 col-md-12">
+                    <div class="card stats-card card-hover-primary shadow-sm card-hover-animation">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-muted text-uppercase fw-bold small">Mediciones en Ayunas</div>
+                                    <div class="stat-value text-primary mt-2">Promedio: {{ promedio_ayunas|floatformat:2 }} mg/dL</div>
+                                    <div class="text-muted text-uppercase fw-bold small mt-2">Medicion más alta</div>
+                                    <div class="stat-value text-primary mt-2">Ayunas: {{ max_ayunas|floatformat:2 }} mg/dL</div>
+                                    <div class="stat-value text-primary">Total: {{ total_ayunas }}</div>
+                                </div>
+                                <div class="icon-circle">
+                                    <i class="fas fa-sun text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-4">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mediciones en Postprandial -->
+                <div class="col-xl-12 col-md-12">
+                    <div class="card stats-card card-hover-success shadow-sm card-hover-animation">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-muted text-uppercase fw-bold small">Mediciones en Postprandial</div>
+                                    <div class="stat-value text-success mt-2">Promedio: {{ promedio_postprandial|floatformat:2 }} mg/dL</div>
+                                    <div class="text-muted text-uppercase fw-bold small mt-2">Medicion más alta</div>
+                                    <div class="stat-value text-success mt-2">Postprandial: {{ max_postprandial|floatformat:2 }} mg/dL</div>
+                                    <div class="stat-value text-success">Total: {{ total_postprandial }}</div>
+                                </div>
+                                <div class="icon-circle">
+                                    <i class="fas fa-utensils text-success"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-4">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mediciones Antes de Dormir -->
+                <div class="col-xl-12 col-md-12">
+                    <div class="card stats-card card-hover-warning shadow-sm card-hover-animation">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-muted text-uppercase fw-bold small">Mediciones Antes de Dormir</div>
+                                    <div class="stat-value text-warning mt-2">Promedio: {{ promedio_antes_dormir|floatformat:2 }} mg/dL</div>
+                                    <div class="text-muted text-uppercase fw-bold small mt-2">Medicion más alta</div>
+                                    <div class="stat-value text-warning mt-2">Antes de dormir: {{ max_antes_dormir|floatformat:2 }} mg/dL</div>
+                                    <div class="stat-value text-warning">Total: {{ total_antes_dormir }}</div>
+                                </div>
+                                <div class="icon-circle">
+                                    <i class="fas fa-bed text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-4">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+              
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="col-md-9">
+            <div class="row">
+                <!-- Gráfico de Ayunas -->
+                <div class="col-12 mb-4">
+                    <div class="dashboard-card">
+                        <h3>Glucosa en Ayunas</h3>
+                        <canvas id="graficaAyunas" class="canvas-hover-animation"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico Postprandial -->
+                <div class="col-12 mb-4">
+                    <div class="dashboard-card">
+                        <h3>Glucosa Postprandial</h3>
+                        <canvas id="graficaPostprandial" class="canvas-hover-animation"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico Antes de Dormir -->
+                <div class="col-12 mb-4">
+                    <div class="dashboard-card">
+                        <h3>Glucosa Antes de Dormir</h3>
+                        <canvas id="graficaAntesDormir" class="canvas-hover-animation"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let data = JSON.parse('{{ data_json|escapejs }}');
 
+    // Función para crear gráficos de línea
     function crearGrafico(id, tipo) {
         let ctx = document.getElementById(id).getContext("2d");
         new Chart(ctx, {
@@ -37,8 +172,80 @@
         });
     }
 
+    // Crear los gráficos de línea
     crearGrafico("graficaAyunas", "Ayunas");
     crearGrafico("graficaPostprandial", "Postprandial");
     crearGrafico("graficaAntesDormir", "Antes de dormir");
+
+   // Datos para el gráfico circular
+    let labels = ["Ayunas", "Postprandial", "Antes de dormir"];
+    let dataGlucosa = [
+        {{ total_ayunas }},
+        {{ total_postprandial }},
+        {{ total_antes_dormir }}
+    ];
+
+    // Crear el gráfico circular
+    let ctxCircular = document.getElementById("graficoCircular").getContext("2d");
+    new Chart(ctxCircular, {
+        type: "pie",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Distribución de Mediciones de Glucosa",
+                data: dataGlucosa,
+                backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
+                borderColor: ["rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(255, 159, 64)"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw + ' mediciones';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    
 </script>
+
+
+<style>
+    /* Animación para las tarjetas */
+    .card-hover-animation {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card-hover-animation:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Animación para los gráficos */
+    .canvas-hover-animation {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .canvas-hover-animation:hover {
+        transform: scale(1.005);
+    }
+
+    .canvas-hover-animation {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .canvas-hover-animation:hover {
+        transform: scale(1.05);
+    }
+</style>
+
 {% endblock %}
