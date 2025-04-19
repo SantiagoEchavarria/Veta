@@ -5,23 +5,24 @@
     transform: translateX(-50%);
     width: auto;
     max-width: 90%;
-    background:linear-gradient(135deg, rgba(51, 142, 211, 0.9) 0%, rgba(22, 67, 105, 0.9) 100%);
+    background:transparent;
     backdrop-filter: blur(10px);
     border-radius:10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     padding: 0.4rem 1.2rem;
     z-index: 1000;
-    border:1px solid rgba(255,255,255,0.2);
+    overflow: visible;
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.554);
 }
 
 .navbar-brand {
     font-size: 1rem;
     font-weight: 600;
-    color: white !important;
+    color: rgb(0, 0, 0) !important;
 }
 
 .nav-link {
-    color: white !important;
+    color: rgb(0, 0, 0) !important;
     font-size: 0.85rem;
     margin:0 0.8rem;
     padding: 0.3rem 0 !important;
@@ -75,3 +76,4 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color); 
 }
+ /* color: var(--primary-color); */
