@@ -11,10 +11,10 @@ class Command(BaseCommand):
         User = get_user_model()
         
         # Obtener datos de entrada
-        usuario_id = input("ID del usuario/paciente: ")
-        glucosa = float(input("Nivel de glucosa (ej: 95.50): "))
-        tipo = input("Tipo (Ayunas/Postprandial/Antes de dormir): ")
-        notas = input("Notas adicionales (opcional): ")
+        usuario_id = 11 #input("ID del usuario/paciente: ")
+        glucosa = float(85) #float(input("Nivel de glucosa (ej: 95.50): "))
+        tipo = "Postprandial" #input("Tipo (Ayunas/Postprandial/Antes de dormir): ")
+        notas = "Nada" #input("Notas adicionales (opcional): ")
 
         # Crear registro
         try:
