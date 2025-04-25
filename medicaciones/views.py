@@ -4,35 +4,30 @@ from .models import Medicacion, Paciente
 from .forms import MedicacionForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
+import datetime 
 
 @login_required
 def crear_medicacion(request):
     paciente, creado = Paciente.objects.get_or_create(usuario=request.user)
-    
-    if paciente.nombre != request.user.nombre and request.user.nombre:
-        paciente.nombre = request.user.nombre
-        paciente.save()
     
     if request.method == "POST":
         form = MedicacionForm(request.POST)
         if form.is_valid():
             medicacion = form.save(commit=False)
             medicacion.paciente = paciente
-
-            # Convertir hora_inicio a la zona horaria del servidor
-            hora_local = timezone.localtime(timezone.now())
-            fecha_local = hora_local.date()
             
-            # Combinar con la fecha actual local y convertir a UTC
-            hora_inicio_local = datetime.datetime.combine(fecha_local, medicacion.hora_inicio)
-            hora_inicio_aware = timezone.make_aware(hora_inicio_local, timezone.get_current_timezone())
-            medicacion.hora_inicio = hora_inicio_aware.astimezone(timezone.utc).time()
+            # Convertir a la zona horaria del usuario
+            hora_inicio = form.cleaned_data['hora_inicio']
+            if not timezone.is_aware(hora_inicio):
+                hora_inicio = timezone.make_aware(hora_inicio)
             
+            medicacion.hora_inicio = hora_inicio
             medicacion.save()
             
             Alerta.objects.create(
                 usuario=paciente.usuario,
-                mensaje=f"Nueva medicación agregada - {hora_local.strftime('%H:%M %d/%m/%Y')}"
+                mensaje=f"Nueva medicación agregada - {timezone.localtime(hora_inicio).strftime('%H:%M %d/%m/%Y')}"
             )
             
             return redirect("listar_medicacion")
@@ -42,7 +37,6 @@ def crear_medicacion(request):
     else:
         form = MedicacionForm()
         return render(request, 'medicaciones/crear_medicacion.html', {'form': form})
-
 
 @login_required
 def editar_medicacion(request, id):
