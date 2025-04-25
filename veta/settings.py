@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework', #Crear apis al instate
-    'corsheaders', #Comunicarse con otro backend
+    'rest_framework',
+    'corsheaders',
     'django_extensions',
     'coreapi',
     'usuarios',

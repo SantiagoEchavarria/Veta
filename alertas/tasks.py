@@ -6,13 +6,10 @@ from .models import Alerta
 from medicaciones.models import Medicacion
 
 def verificar_medicaciones():
-    """ Revisa si hay medicaciones que necesitan una alerta y, en caso de que
-    alertas pasadas no hayan sido creadas (por caída del servidor, por ejemplo),
-    las genera sin duplicados. """
     print(f"[{datetime.now()}] Hilo de verificación de medicaciones iniciado...")
 
     while True:
-        tiempo_actual = now()  # Tiempo timezone-aware
+        tiempo_actual = now()
         print(f"[{datetime.now()}] Verificando medicaciones...")
 
         medicaciones = Medicacion.objects.all()
@@ -26,64 +23,67 @@ def verificar_medicaciones():
             print(f"[{datetime.now()}] Procesando medicación: {medicacion.nombre_medicamento}, frecuencia: {medicacion.frecuencia}h, hora inicio: {medicacion.hora_inicio}")
 
             try:
-                # Construir el punto base a partir de la fecha actual y la hora de inicio
+                # Calcular base_dosis como la combinación de la fecha actual y la hora de inicio
                 base_dosis = datetime.combine(tiempo_actual.date(), medicacion.hora_inicio)
                 if not is_aware(base_dosis):
                     base_dosis = make_aware(base_dosis, timezone=tiempo_actual.tzinfo)
                 
-                # Si el tiempo actual es anterior a la hora de inicio de hoy, asumimos que la serie inició ayer.
+                # Ajustar base_dosis si es necesario
                 if tiempo_actual < base_dosis:
                     base_dosis -= timedelta(days=1)
                 
-                # Generar las dosis pasadas: aquellas cuya hora programada es <= tiempo_actual.
+                # Considerar la fecha de creación de la medicación
+                # Asegurar que created_at es aware (ajustar según tu modelo)
+                created_at = medicacion.created_at
+                if not is_aware(created_at):
+                    created_at = make_aware(created_at, timezone=tiempo_actual.tzinfo)
+                
+                # La dosis válida más reciente entre base_dosis y created_at
+                inicio_valido = max(base_dosis, created_at)
+                
                 past_doses = []
-                dosis = base_dosis
+                dosis = inicio_valido
                 while dosis <= tiempo_actual:
                     past_doses.append(dosis)
                     dosis += timedelta(hours=medicacion.frecuencia)
                 
-                # La siguiente dosis es la primera que aún no ha ocurrido.
-                siguiente_dosis = dosis
+                siguiente_dosis = dosis  # Primera dosis futura
                 
-                # Procesar las dosis pasadas para generar alertas pendientes.
+                # Generar alertas para dosis pasadas válidas
                 for dosis_programada in past_doses:
                     mensaje_dosis = (
                         f"Es hora de tomar {medicacion.nombre_medicamento} para {medicacion.paciente} "
-                        f"(programada para {dosis_programada.strftime('%H:%M')})"
+                        f"(programada para {dosis_programada.strftime('%Y-%m-%d %H:%M')})"  # Incluir fecha
                     )
-                    # Se verifica si ya existe una alerta para esa dosis.
                     if not Alerta.objects.filter(mensaje=mensaje_dosis).exists():
                         try:
                             nueva_alerta = Alerta.objects.create(mensaje=mensaje_dosis)
                             print(f"[{datetime.now()}] ALERTA GENERADA: {mensaje_dosis} con ID: {nueva_alerta.id}")
                         except Exception as e:
-                            print(f"[{datetime.now()}] ERROR AL GUARDAR ALERTA para dosis {dosis_programada.strftime('%H:%M')}: {e}")
+                            print(f"[{datetime.now()}] ERROR AL GUARDAR ALERTA para dosis {dosis_programada}: {e}")
                     else:
-                        print(f"[{datetime.now()}] Alerta ya existente para dosis programada a las {dosis_programada.strftime('%H:%M')}")
+                        print(f"[{datetime.now()}] Alerta ya existente para {dosis_programada}")
                 
-                # Procesar la siguiente dosis si estamos en el margen de activación (0 a 1 minuto)
+                # Procesar siguiente dosis si está en el margen
                 diferencia_minutos = (siguiente_dosis - tiempo_actual).total_seconds() / 60
-                print(f"[{datetime.now()}] Siguiente dosis programada: {siguiente_dosis}")
-                print(f"[{datetime.now()}] Diferencia para siguiente alerta: {diferencia_minutos:.2f} minutos")
                 if 0 <= diferencia_minutos < 1:
                     mensaje_siguiente = (
                         f"Es hora de tomar {medicacion.nombre_medicamento} para {medicacion.paciente} "
-                        f"(programada para {siguiente_dosis.strftime('%H:%M')})"
+                        f"(programada para {siguiente_dosis.strftime('%Y-%m-%d %H:%M')})"
                     )
                     if not Alerta.objects.filter(mensaje=mensaje_siguiente).exists():
-                        print(f"[{datetime.now()}] Creando alerta para la próxima dosis.")
                         try:
                             nueva_alerta = Alerta.objects.create(mensaje=mensaje_siguiente)
-                            print(f"[{datetime.now()}] Alerta guardada correctamente con ID: {nueva_alerta.id}")
+                            print(f"[{datetime.now()}] Alerta próxima dosis creada: {mensaje_siguiente}")
                         except Exception as e:
-                            print(f"[{datetime.now()}] ERROR AL GUARDAR ALERTA para próxima dosis: {e}")
+                            print(f"[{datetime.now()}] ERROR Alerta próxima dosis: {e}")
                     else:
-                        print(f"[{datetime.now()}] Alerta para la próxima dosis ya existe.")
+                        print(f"[{datetime.now()}] Alerta próxima dosis ya existe.")
                         
             except Exception as e:
                 print(f"[{datetime.now()}] Error en la verificación: {e}")
 
-        time.sleep(30)  # Espera 30 segundos antes de la próxima verificación
+        time.sleep(30)
 
 def iniciar_hilo_medicaciones(sender, **kwargs):
     thread = threading.Thread(target=verificar_medicaciones, daemon=True)
