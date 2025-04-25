@@ -36,8 +36,8 @@
                     {{ form.frecuencia }}
                 </div>
                 <div class="mb-3">
-                    <label for="id_hora_inicio" class="form-label text-muted">Hora de inicio</label>
-                    <input type="time" name="hora_inicio" id="id_hora_inicio" class="form-control" required value="{{ form.hora_inicio.value|default:'' }}">
+                    <label for="id_hora_inicio" class="form-label text-muted">Fecha y Hora de inicio</label>
+                    <input type="datetime-local" name="hora_inicio" id="id_hora_inicio" class="form-control" required>
                 </div>
                 <div class="d-grid">
                     <button type="submit" class="btn btn-dark btn-lg">Guardar Cambios</button>
