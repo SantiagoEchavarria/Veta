@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .models import Alerta
 
 def vista_alertas(request):
-    alertas = Alerta.objects.all()
+    alertas = Alerta.objects.filter(usuario=request.user).order_by('-created_at')
     return render(request, "alertas/alertas.html", {"alertas": alertas})
 
 def api_alertas(request):

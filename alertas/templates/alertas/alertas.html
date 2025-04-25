@@ -2,44 +2,67 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Alertas de Medicación</h2>
-    <p>Las alertas se generan automáticamente cuando llega la hora de la medicación.</p>
-    
-    <div class="card">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-bell me-2"></i>Alertas de Medicación
+            </h5>
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Lista de Alertas</h5>
-            <ul id="alertas-lista" class="list-group">
+            <p class="text-muted">Las alertas se generan automáticamente cuando llega la hora de la medicación.</p>
+            
+            <div class="alertas-container" style="max-height: 500px; overflow-y: auto;">
                 {% for alerta in alertas %}
-                    <li class="list-group-item">{{ alerta.mensaje }} - {{ alerta.fecha_creacion|date:"H:i d/m/Y" }}</li>
+                    <div class="alert alert-{% if forloop.first %}warning{% else %}light{% endif %} mb-2">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ alerta.mensaje }}</span>
+                            <small class="text-muted">{{ alerta.created_at|date:"H:i d/m/Y" }}</small>
+                        </div>
+                    </div>
                 {% empty %}
-                    <li class="list-group-item">No hay alertas pendientes.</li>
+                    <div class="alert alert-info">
+                        No hay alertas pendientes.
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     function actualizarAlertas() {
-        fetch("{% url 'api_alertas' %}")  // Ruta de la API que devuelve las alertas en JSON
-            .then(response => response.json())
+        fetch("{% url 'api_alertas' %}")
+            .then(response => {
+                if (!response.ok) throw new Error("Error en la respuesta");
+                return response.json();
+            })
             .then(data => {
-                let lista = document.getElementById("alertas-lista");
-                lista.innerHTML = "";
+                const container = document.querySelector('.alertas-container');
                 
                 if (data.alertas.length === 0) {
-                    lista.innerHTML = "<li class='list-group-item'>No hay alertas pendientes.</li>";
+                    container.innerHTML = `
+                        <div class="alert alert-info">
+                            No hay alertas pendientes.
+                        </div>
+                    `;
                 } else {
-                    data.alertas.forEach(alerta => {
-                        let item = document.createElement("li");
-                        item.classList.add("list-group-item");
-                        item.textContent = `${alerta.mensaje} - ${new Date(alerta.fecha_creacion).toLocaleString()}`;
-                        lista.appendChild(item);
-                    });
+                    container.innerHTML = data.alertas.map(alerta => `
+                        <div class="alert ${data.alertas.indexOf(alerta) === 0 ? 'alert-warning' : 'alert-light'} mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>${alerta.mensaje}</span>
+                                <small class="text-muted">${new Date(alerta.created_at).toLocaleString('es-ES')}</small>
+                            </div>
+                        </div>
+                    `).join('');
                 }
+            })
+            .catch(error => {
+                console.error("Error al actualizar alertas:", error);
             });
     }
     
-    setInterval(actualizarAlertas, 60000);  // Actualizar cada minuto
+    // Actualizar cada 30 segundos y al cargar la página
+    document.addEventListener('DOMContentLoaded', actualizarAlertas);
+    setInterval(actualizarAlertas, 30000);
 </script>
 {% endblock %}
