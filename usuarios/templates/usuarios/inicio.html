@@ -37,6 +37,106 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 {% endif %}
+<div id="tips-container" class="announcement-bar__message text-center">
+    <div class="message">Cargando tips...</div>
+</div>
+
+<style>
+  #tips-container {
+    padding: 20px;
+    background: #ffffff;
+    text-align: center;
+    margin: 20px auto;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+  }
+  
+  .tip-title {
+    font-weight: 800;
+    color: #00cc66;
+    margin-bottom: 12px;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  .tip-content {
+    color: #333333;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }    
+  }
+
+  #tips-container .message {
+    animation: fadeIn 0.8s ease-out;
+  }
+</style>
+
+<script>
+  const tips = [
+    {
+      title: "Carbohidratos Saludables",
+      content: "Prioriza los carbohidratos complejos como avena, quinoa y camote. Estos proporcionan energía sostenida y son ricos en fibra."
+    },
+    {
+      title: "Frutas de Temporada",
+      content: "Las frutas de estación no solo son más frescas y económicas, sino que también contienen mayor cantidad de nutrientes y antioxidantes."
+    },
+    {
+      title: "Hidratación Consciente",
+      content: "Incluye infusiones naturales y agua frutalizada para mantener una hidratación óptima durante el día."
+    },
+    {
+      title: "Balance Nutricional",
+      content: "Combina siempre las frutas con una fuente de proteína para mantener estables tus niveles de glucosa en sangre."
+    },
+    {
+      title: "Porciones Adecuadas",
+      content: "Una porción de carbohidratos equivale a 1/2 taza de granos cocidos o 1 rebanada de pan integral. Modera tus porciones."
+    },
+    {
+      title: "Variedad de Colores",
+      content: "Consume frutas de diferentes colores para obtener una amplia gama de vitaminas y minerales esenciales."
+    },
+    {
+      title: "Granos Integrales",
+      content: "Prefiere siempre versiones integrales de panes y pastas, contienen hasta un 40% más de nutrientes que las versiones refinadas."
+    },
+    {
+      title: "Azúcares Naturales",
+      content: "Opta por endulzantes naturales como la fruta fresca o deshidratada en lugar de azúcares procesados."
+    }
+  ];
+
+  function mostrarTipsRotativos() {
+    const container = document.getElementById('tips-container');
+    let index = 0;
+    
+    setInterval(() => {
+      container.innerHTML = `
+        <div class="message">
+          <div class="tip-title">${tips[index].title}</div>
+          <div class="tip-content">${tips[index].content}</div>
+        </div>
+      `;
+      
+      index = (index + 1) % tips.length;
+    }, 7000);
+  }
+  
+  document.addEventListener('DOMContentLoaded', mostrarTipsRotativos);
+</script>
+
 <div class="auth-background">
     <div class="parent">
         <!-- Cómo funciona -->
