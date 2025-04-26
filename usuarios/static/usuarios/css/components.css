@@ -123,3 +123,49 @@ Ejemplo de usos:
 </h3>
 
 */
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    margin: 1rem;
+}
+
+@keyframes modal-entrance {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content.auth-card {
+    background: white !important;
+    max-width: 500px;
+}
+
+.modal-text-center .auth-input-group {
+    text-align: center;
+}
+
+.modal-text-center .auth-input-group p {
+    color: var(--font-color-sub);
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 80%;
+}
