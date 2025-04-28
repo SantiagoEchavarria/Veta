@@ -3,20 +3,48 @@
 {% block content %}
 <div class="container mt-5">
     <h2>Actualizar Contraseña</h2>
+
+    {# Mostrar mensajes de Django #}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {# Mostrar errores no asociados a un solo campo #}
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
         <div class="mb-3">
             <label for="id_old_password" class="form-label">Contraseña actual</label>
             {{ form.old_password }}
+            {% for err in form.old_password.errors %}
+                <div class="text-danger small">{{ err }}</div>
+            {% endfor %}
         </div>
         <div class="mb-3">
             <label for="id_new_password1" class="form-label">Nueva contraseña</label>
             {{ form.new_password1 }}
             <small class="form-text text-muted">{{ form.new_password1.help_text }}</small>
+            {% for err in form.new_password1.errors %}
+                <div class="text-danger small">{{ err }}</div>
+            {% endfor %}
         </div>
         <div class="mb-3">
             <label for="id_new_password2" class="form-label">Confirmar nueva contraseña</label>
             {{ form.new_password2 }}
+            {% for err in form.new_password2.errors %}
+                <div class="text-danger small">{{ err }}</div>
+            {% endfor %}
         </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
         <a href="{% url 'inicio' %}" class="btn btn-secondary">Cancelar</a>
