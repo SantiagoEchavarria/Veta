@@ -1,9 +1,11 @@
 import threading
 import time
 from datetime import timedelta
+from django.conf import settings
 from django.utils import timezone
 from .models import Alerta
 from medicaciones.models import Medicacion
+
 
 def verificar_medicaciones():
     print(f"[{timezone.now()}] Hilo de verificación de medicaciones iniciado...")
@@ -44,17 +46,21 @@ def verificar_medicaciones():
                         f"Es hora de tomar {medicacion.nombre_medicamento} para {medicacion.paciente} "
                         f"(programada para {siguiente_dosis.strftime('%Y-%m-%d %H:%M')})"
                     )
-                    
-                    if not Alerta.objects.filter(mensaje=mensaje).exists():
-                        Alerta.objects.create(mensaje=mensaje)
-                        print(f"[{tiempo_actual}] ¡ALERTA GENERADA!: {mensaje}")
+                    # Obtener el usuario asociado al paciente
+                    usuario_alerta = medicacion.paciente.usuario
+
+                    # Evitar alertas duplicadas para el mismo usuario y mensaje
+                    if not Alerta.objects.filter(mensaje=mensaje, usuario=usuario_alerta).exists():
+                        Alerta.objects.create(usuario=usuario_alerta, mensaje=mensaje)
+                        print(f"[{tiempo_actual}] ¡ALERTA GENERADA!: {mensaje} (usuario: {usuario_alerta})")
                     else:
-                        print(f"[{tiempo_actual}] Alerta ya existente para esta dosis")
+                        print(f"[{tiempo_actual}] Alerta ya existente para esta dosis y usuario")
 
             except Exception as e:
                 print(f"[{tiempo_actual}] Error en la verificación: {str(e)}")
 
         time.sleep(30)
+
 
 def iniciar_hilo_medicaciones(sender, **kwargs):
     thread = threading.Thread(target=verificar_medicaciones, daemon=True)
