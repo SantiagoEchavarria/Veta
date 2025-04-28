@@ -49,7 +49,8 @@ Si necesitas especificar una versión concreta de Python (por ejemplo, 3.11):
 1. **Crear entorno virtual con versión específica**
    ```bash
    # Reemplaza 3.11 por tu versión deseada
-   python3.11 -m venv venv
+   # python3.11 -m venv venv
+   py -3.11 -m venv venv
    ```
 2. **Verificar versión del entorno virtual**
    ```bash
