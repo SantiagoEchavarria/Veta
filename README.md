@@ -45,7 +45,7 @@
 ## Usar una versión específica de Python (opcional)
 
 Si necesitas especificar una versión concreta de Python (por ejemplo, 3.11):
-
+[3.11.2](https://www.python.org/downloads/release/python-3112/)
 1. **Crear entorno virtual con versión específica**
    ```bash
    # Reemplaza 3.11 por tu versión deseada
