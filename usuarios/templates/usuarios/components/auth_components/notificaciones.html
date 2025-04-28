@@ -1,33 +1,51 @@
-<a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
-    <i class="fas fa-bell notification-bell"></i>
-    {% if alertas %}
-        <span class="badge bg-danger badge-notification">{{ alertas|length }}</span>
+<a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-bell fs-5"></i>
+    {% if alertas_globales %}
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ alertas_globales|length }}
+            <span class="visually-hidden">notificaciones sin leer</span>
+        </span>
     {% endif %}
 </a>
-<ul class="dropdown-menu dropdown-menu-end">
-    <li><h6 class="dropdown-header">Notificaciones Recientes</h6></li>
+<ul class="dropdown-menu dropdown-menu-end" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
+    <li><h6 class="dropdown-header fw-bold">Notificaciones Recientes</h6></li>
     
-    {% if alertas %}
-        {% for alerta in alertas %}
+    {% if alertas_globales %}
+        {% for alerta in alertas_globales %}
             <li>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="me-2">
-                        {% if alerta.tipo == 'error' %}
-                            <i class="fas fa-exclamation-circle text-danger"></i>
-                        {% elif alerta.tipo == 'warning' %}
-                            <i class="fas fa-exclamation-triangle text-warning"></i>
-                        {% else %}
-                            <i class="fas fa-info-circle text-primary"></i>
-                        {% endif %}
+                <a class="dropdown-item py-2" href="#">
+                    <div class="d-flex align-items-start">
+                        <div class="me-2 mt-1">
+                            {% if alerta.tipo == 'error' %}
+                                <i class="fas fa-exclamation-circle text-danger"></i>
+                            {% elif alerta.tipo == 'warning' %}
+                                <i class="fas fa-exclamation-triangle text-warning"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle text-primary"></i>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-medium">{{ alerta.mensaje }}</span>
+                                <small class="text-muted ms-2">{{ alerta.created_at|timesince }}</small>
+                            </div>
+                            <small class="text-muted d-block">{{ alerta.created_at|date:"d M Y H:i" }}</small>
+                        </div>
                     </div>
-                    <span>{{ alerta.mensaje }}</span>
                 </a>
             </li>
-            <li><hr class="dropdown-divider"></li>
+            {% if not forloop.last %}
+                <li><hr class="dropdown-divider my-1"></li>
+            {% endif %}
         {% endfor %}
     {% else %}
-        <li><p class="dropdown-item text-muted text-center">No hay notificaciones</p></li>
+        <li><p class="dropdown-item text-muted text-center py-2">No hay notificaciones nuevas</p></li>
     {% endif %}
     
-    <li><a class="dropdown-item text-center text-primary" href="/alertas">Ver todas</a></li>
+    <li><hr class="dropdown-divider my-1"></li>
+    <li>
+        <a class="dropdown-item text-center text-primary fw-medium py-2" href="{% url 'vista_alertas' %}">
+            <i class="fas fa-list me-1"></i> Ver todas las notificaciones
+        </a>
+    </li>
 </ul>

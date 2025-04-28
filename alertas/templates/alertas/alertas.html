@@ -2,30 +2,29 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">
-                <i class="fas fa-bell me-2"></i>Alertas de Medicación
-            </h5>
-        </div>
-        <div class="card-body">
-            <p class="text-muted">Las alertas se generan automáticamente cuando llega la hora de la medicación.</p>
-            
-            <div class="alertas-container" style="max-height: 500px; overflow-y: auto;">
-                {% for alerta in alertas %}
-                    <div class="alert alert-{% if forloop.first %}warning{% else %}light{% endif %} mb-2">
-                        <div class="d-flex justify-content-between">
-                            <span>{{ alerta.mensaje }}</span>
-                            <small class="text-muted">{{ alerta.created_at|date:"H:i d/m/Y" }}</small>
-                        </div>
-                    </div>
-                {% empty %}
-                    <div class="alert alert-info">
-                        No hay alertas pendientes.
-                    </div>
-                {% endfor %}
+    <h2>Todas mis alertas</h2>
+    <div class="list-group">
+        {% for alerta in alertas %}
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    {% if alerta.tipo == 'error' %}
+                        <i class="fas fa-exclamation-circle text-danger fa-lg"></i>
+                    {% elif alerta.tipo == 'warning' %}
+                        <i class="fas fa-exclamation-triangle text-warning fa-lg"></i>
+                    {% else %}
+                        <i class="fas fa-info-circle text-primary fa-lg"></i>
+                    {% endif %}
+                </div>
+                <div>
+                    <h6 class="mb-1">{{ alerta.mensaje }}</h6>
+                    <small class="text-muted">{{ alerta.created_at|date:"DATETIME_FORMAT" }}</small>
+                </div>
             </div>
-        </div>
+        </a>
+        {% empty %}
+        <div class="alert alert-info">No tienes alertas</div>
+        {% endfor %}
     </div>
 </div>
 

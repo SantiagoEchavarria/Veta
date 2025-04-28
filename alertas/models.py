@@ -2,6 +2,12 @@ from django.conf import settings
 from django.db import models
 
 class Alerta(models.Model):
+    TIPO_CHOICES = [
+        ('info', 'Información'),
+        ('warning', 'Advertencia'),
+        ('error', 'Error'),
+    ]
+    
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE,  
@@ -9,10 +15,11 @@ class Alerta(models.Model):
         blank=True
     )
     mensaje = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)  # Solo necesitas este campo
+    tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default='info')
+    created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        ordering = ['-created_at']  # Orden por defecto
+        ordering = ['-created_at']
         
     def __str__(self):
-        return f"Alerta para {self.usuario}: {self.mensaje} ({self.created_at.strftime('%H:%M %d/%m/%Y')})"
+        return f"{self.get_tipo_display()}: {self.mensaje}"
