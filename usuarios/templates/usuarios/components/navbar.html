@@ -1,37 +1,27 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <!-- Brand y botón toggler alineados -->
-        <div class="d-flex justify-content-between w-100 align-items-center">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-heartbeat me-2"></i>VETA
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-
-        <!-- Menú colapsable -->
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-heartbeat me-2"></i>VETA
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
-                    <!-- Menú Principal - Añadí mb-2 para separación en móviles -->
-                    <li class="nav-item mb-2 mb-lg-0">
-                        {% include 'usuarios/components/auth_components/authenticated_menu.html' %}                    
-                    </li>
-                    
+                    <!-- Menú Principal -->
+                    {% include 'usuarios/components/auth_components/authenticated_menu.html' %}                    
                     <!-- Notificaciones -->
-                    <li class="nav-item dropdown mx-lg-2 mb-2 mb-lg-0">
+                    <li class="nav-item dropdown mx-2">
                         {% include 'usuarios/components/auth_components/notificaciones.html' %}
                     </li>
                     
                     <!-- Perfil de Usuario -->
-                    <li class="nav-item dropdown mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
                         {% include 'usuarios/components/auth_components/perfil_usuario.html' %}
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        {% include 'usuarios/components/auth_components/unauthenticated_menu.html' %}
-                    </li>
+                    {% include 'usuarios/components/auth_components/unauthenticated_menu.html' %}
                 {% endif %}
             </ul>
         </div>
