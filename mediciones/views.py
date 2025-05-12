@@ -34,6 +34,7 @@ def editar_medicion(request, medicion_id):
         form = MedicionGlucosaForm(request.POST, instance=medicion)
         if form.is_valid():
             instance = form.save(commit=False)
+            instance.fecha_hora = form.cleaned_data['fecha_hora']
             instance.nivel_glucosa = round(instance.nivel_glucosa, 2)
             instance.save()
             return redirect('lista_mediciones')

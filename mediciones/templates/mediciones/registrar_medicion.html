@@ -51,9 +51,8 @@
                        name="fecha_hora"
                        id="id_fecha_hora"
                        class="auth-input"
-                       value="{% if form.fecha_hora.value %}{{ form.fecha_hora.value|date:'Y-m-d\TH:i' }}{% else %}{{ medicion.fecha_hora|date:'Y-m-d\TH:i' }}{% endif %}"
-                       required
-                       step="300"> 
+                       value="{{ form.fecha_hora.value|date:'Y-m-d\TH:i' }}"
+                       required>
             </div>
 
             <!-- Tipo de Medición -->

@@ -10,7 +10,7 @@ class MedicionGlucosa(models.Model):
 
     paciente = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     nivel_glucosa = models.DecimalField(max_digits=5, decimal_places=2)
-    fecha_hora = models.DateTimeField(auto_now_add=True)
+    fecha_hora = models.DateTimeField()
     tipo_medicion = models.CharField(max_length=20, choices=TIPO_MEDICION_CHOICES)
     notas = models.TextField(blank=True, null=True)
     

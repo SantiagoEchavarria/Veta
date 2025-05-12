@@ -29,5 +29,6 @@ class MedicionGlucosaForm(forms.ModelForm):
         }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['fecha_hora'].input_formats = ['%Y-%m-%dT%H:%M']
         self.fields['nivel_glucosa'].decimal_places = 2
         self.fields['nivel_glucosa'].localize = True
