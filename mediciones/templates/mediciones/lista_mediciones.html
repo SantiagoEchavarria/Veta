@@ -1,51 +1,45 @@
 {% extends "usuarios/base.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-3">Mis Mediciones de Glucosa</h2>
-    <a href="{% url 'registrar_medicion' %}" class="btn btn-primary mb-3">Registrar nueva medición</a>
+<div class="data-container">
+    <h2>Mis Mediciones de Glucosa</h2>
+    <a href="{% url 'registrar_medicion' %}" class="button primary">Registrar nueva medición</a>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Fecha/Hora</th>
-                    <th>Nivel de Glucosa</th>
-                    <th>Tipo de Medición</th>
-                    <th>Notas</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for medicion in mediciones %}
-                <tr>
-                    <td>{{ medicion.fecha_hora }}</td>
-                    <td>{{ medicion.nivel_glucosa }} mg/dL</td>
-                    <td>{{ medicion.tipo_medicion }}</td>
-                    <td>{{ medicion.notas|default:"Sin notas" }}</td>
-                    <td>
-                        <a href="{% url 'editar_medicion' medicion.id %}" class="btn btn-warning btn-sm">Editar</a>
-                        <form action="{% url 'eliminar_medicion' medicion.id %}" method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm" 
-                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta medición?');">
-                                Eliminar
-                            </button>
-                        </form>
-                        
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No hay mediciones registradas.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Fecha/Hora</th>
+                <th>Nivel de Glucosa</th>
+                <th>Tipo de Medición</th>
+                <th>Notas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicion in mediciones %}
+            <tr>
+                <td>{{ medicion.fecha_hora }}</td>
+                <td>{{ medicion.nivel_glucosa }} mg/dL</td>
+                <td>{{ medicion.tipo_medicion }}</td>
+                <td>{{ medicion.notas|default:"Sin notas" }}</td>
+                <td class="actions">
+                    <a href="{% url 'editar_medicion' medicion.id %}" class="button warning">Editar</a>
+                    <form class="inline-form" action="{% url 'eliminar_medicion' medicion.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="button danger" 
+                                onclick="return confirm('¿Estás seguro de eliminar esta medición?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="empty-message">No hay mediciones registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-
-
-
-
-
 {% endblock %}

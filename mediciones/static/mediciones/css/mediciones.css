@@ -1,0 +1,146 @@
+/* Mantenemos variables consistentes con el auth */
+:root {
+    --form-color: #338ed3;
+    --form-color-secondary: #264653;
+    --danger-color: #e75151;
+    --form-color-sub: #6b7280;
+    --form-radius: 15px;
+    --form-focus: #3a86ff;
+}
+
+/* Contenedor principal */
+.data-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
+/* Estilo para tablas */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--form-color);
+    border-radius: var(--form-radius);
+    box-shadow: 4px 4px var(--form-color);
+    backdrop-filter: blur(5px);
+    margin: 1.5rem 0;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--form-color);
+}
+
+.data-table th {
+    background-color: var(--form-color);
+    color: white;
+    font-weight: 600;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tr:hover {
+    background-color: rgba(242, 242, 242, 0.5);
+}
+
+/* Botones de acción */
+.button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: calc(var(--form-radius) - 5px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.primary {
+    background-color: var(--form-color);
+    color: white;
+    box-shadow: 3px 3px var(--form-color-secondary);
+}
+
+.danger {
+    background-color: var(--danger-color);
+    color: white;
+    box-shadow: 3px 3px #8b2d16;
+}
+
+.warning {
+    background-color: #E9C46A;
+    color: black;
+    box-shadow: 3px 3px #b8933a;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+}
+
+.button:active {
+    box-shadow: none;
+    transform: translate(2px, 2px);
+}
+
+/* Formularios de edición */
+.edit-form {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--form-color);
+    border-radius: var(--form-radius);
+    box-shadow: 4px 4px var(--form-color);
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    backdrop-filter: blur(5px);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--form-color-sub);
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--form-color);
+    border-radius: var(--form-radius);
+    box-shadow: 3px 3px var(--form-color);
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: var(--form-focus);
+    box-shadow: 3px 3px var(--form-focus);
+    outline: none;
+}
+
+/* Mensajes y alertas */
+.empty-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--form-color-sub);
+}
+
+.confirmation-dialog {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--form-radius);
+    padding: 1.5rem;
+    max-width: 400px;
+    margin: 2rem auto;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
