@@ -28,17 +28,24 @@ def registrar_medicion(request):
 
 @login_required
 def editar_medicion(request, medicion_id):
-    medicion = get_object_or_404(MedicionGlucosa, id=medicion_id)
+    medicion = get_object_or_404(MedicionGlucosa, id=medicion_id, paciente=request.user)
     
     if request.method == "POST":
         form = MedicionGlucosaForm(request.POST, instance=medicion)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.nivel_glucosa = round(instance.nivel_glucosa, 2)
+            instance.save()
             return redirect('lista_mediciones')
     else:
-        form = MedicionGlucosaForm(instance=medicion)
-
-    return render(request, 'mediciones/registrar_medicion.html', {'form': form, 'medicion': medicion})
+        form = MedicionGlucosaForm(instance=medicion, initial={
+            'nivel_glucosa': round(medicion.nivel_glucosa, 2)
+        })
+    
+    return render(request, 'mediciones/registrar_medicion.html', {
+        'form': form,
+        'medicion': medicion
+    })
 
 @login_required
 def eliminar_medicion(request, medicion_id):

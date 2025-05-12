@@ -6,10 +6,10 @@
         <div class="auth-header">
             <h1 class="auth-title">{% if medicion %}Editar{% else %}Registrar Nueva{% endif %} Medición</h1>
             
-            {% if form_errors %}
+            {% if form.errors %}
             <div class="auth-error">
                 <ul class="error-list">
-                    {% for field, errors in form_errors.items %}
+                    {% for field, errors in form.errors.items %}
                         <li><strong>{{ field|title }}:</strong> {{ errors.0 }}</li>
                     {% endfor %}
                 </ul>
@@ -33,12 +33,15 @@
             <div class="auth-input-group">
                 <label class="input-label">Nivel de Glucosa (mg/dL)</label>
                 <input type="number" 
-                       step="0.1"
+                       step="0.01"
                        name="nivel_glucosa"
                        id="id_nivel_glucosa"
                        class="auth-input"
-                       value="{{ form.nivel_glucosa.value|default:'' }}"
-                       required>
+                       value="{% if form.nivel_glucosa.value %}{{ form.nivel_glucosa.value|stringformat:'.2f' }}{% else %}{{ medicion.nivel_glucosa|floatformat:2 }}{% endif %}"
+                       required
+                       min="0"
+                       max="600"
+                       pattern="^\d+(\.\d{1,2})?$">
             </div>
 
             <!-- Fecha y Hora -->
@@ -48,8 +51,9 @@
                        name="fecha_hora"
                        id="id_fecha_hora"
                        class="auth-input"
-                       value="{{ form.fecha_hora.value|date:'Y-m-d\TH:i' }}"
-                       required>
+                       value="{% if form.fecha_hora.value %}{{ form.fecha_hora.value|date:'Y-m-d\TH:i' }}{% else %}{{ medicion.fecha_hora|date:'Y-m-d\TH:i' }}{% endif %}"
+                       required
+                       step="300"> 
             </div>
 
             <!-- Tipo de Medición -->
@@ -60,9 +64,9 @@
                         class="auth-input"
                         required>
                     <option value="">Seleccione...</option>
-                    <option value="Ayunas" {% if form.tipo_medicion.value == "Ayunas" %}selected{% endif %}>Ayunas</option>
-                    <option value="Postprandial" {% if form.tipo_medicion.value == "Postprandial" %}selected{% endif %}>Postprandial</option>
-                    <option value="Antes de dormir" {% if form.tipo_medicion.value == "Antes de dormir" %}selected{% endif %}>Antes de Dormir</option>
+                    <option value="Ayunas" {% if form.tipo_medicion.value == "Ayunas" or medicion.tipo_medicion == "Ayunas" %}selected{% endif %}>Ayunas</option>
+                    <option value="Postprandial" {% if form.tipo_medicion.value == "Postprandial" or medicion.tipo_medicion == "Postprandial" %}selected{% endif %}>Postprandial</option>
+                    <option value="Antes de dormir" {% if form.tipo_medicion.value == "Antes de dormir" or medicion.tipo_medicion == "Antes de dormir" %}selected{% endif %}>Antes de Dormir</option>
                 </select>
             </div>
 
@@ -72,7 +76,7 @@
                 <textarea name="notas"
                           id="id_notas"
                           class="auth-input"
-                          style="height: 100px; resize: vertical">{{ form.notas.value|default:'' }}</textarea>
+                          style="height: 100px; resize: vertical">{% if form.notas.value %}{{ form.notas.value }}{% else %}{{ medicion.notas|default:'' }}{% endif %}</textarea>
             </div>
 
             <div class="auth-input-group">
