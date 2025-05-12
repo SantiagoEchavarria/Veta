@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-vxu-l60d^+u5j-xtuwtz=9nglag)x2gmxsqd_aqd3ah&k0mc*f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,10 +50,6 @@ INSTALLED_APPS = [
     'alertas',
     
 ]
-# 'corsheaders.middleware.CorsMiddleware':
-# Este middleware añade automáticamente los encabezados CORS a las respuestas
-# de tu aplicación, según lo definido en las configuraciones (como CORS_ALLOWED_ORIGINS).
-# Se recomienda colocarlo lo más arriba posible en la lista de MIDDLEWARE.
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
