@@ -1,81 +1,86 @@
-{% extends "usuarios/base.html" %}
+{% extends 'usuarios/base.html' %}
 {% block content %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Paciente</h1>
+            {% if form.errors %}
+            <div class="auth-error">
+                <ul class="error-list">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field|title }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
 
-<div class="bg-light">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <!-- Main Content -->
-            <div class="col-12 col-md-8 col-lg-6">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-0 d-flex flex-column justify-content-center align-items-center">
-                        <div class="row g-0 w-100">
-                            <!-- Content Area -->
-                            <div class="col-12">
-                                <div class="p-4 w-100">
-                                    <h2 class="mb-4 text-center font-weight-bold">Editar tipo de diabetes</h2>
-                                    
-                                    <div class="alert alert-info mb-4">
-                                        Para cambiar tu nombre, ve a <a href="{% url 'editar_seccion' %}" class="alert-link">Editar perfil</a>
-                                    </div>
-
-                                    {{ error }}
-                                    <form method="post">
-                                        {% csrf_token %}
-                                        <div class="mb-4">
-                                            <div class="mb-3">
-                                                <label class="form-label fw-bold">{{ form.tipo_diabetes.label }}</label>
-                                                <select name="{{ form.tipo_diabetes.name }}" 
-                                                        class="form-control p-2 border-1 border-secondary rounded" 
-                                                        style="height: 40px;">
-                                                    {% for choice in form.tipo_diabetes.field.choices %}
-                                                        <option value="{{ choice.0 }}" {% if choice.0 == form.tipo_diabetes.value %}selected{% endif %}>
-                                                            {{ choice.1 }}
-                                                        </option>
-                                                    {% endfor %}
-                                                </select>
-                                                <small class="form-text text-muted">{{ form.tipo_diabetes.help_text }}</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="mt-4 text-center">
-                                            <button type="submit" class="btn btn-danger px-4 py-2">Guardar cambios</button>
-                                            <a href="{% url 'mi_detalle_paciente' %}" class="btn btn-outline-secondary px-4 py-2 ms-2">Cancelar</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+        <form class="auth-form" method="post">
+            {% csrf_token %}
+            
+            <!-- Sección Diabetes -->
+            <div class="auth-section">
+                <h5 class="section-title">Configuración médica</h5>
+                
+                <!-- Campo Tipo Diabetes -->
+                <div class="auth-input-group">
+                    <label class="input-label">Tipo de diabetes</label>
+                    <div class="auth-select-wrapper">
+                        <select class="auth-input" 
+                                name="tipo_diabetes" 
+                                required>
+                            {% for choice in form.tipo_diabetes.field.choices %}
+                                <option value="{{ choice.0 }}" 
+                                    {% if choice.0 == form.tipo_diabetes.value %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     </div>
+                    <div class="input-hint">Selecciona tu tipo diagnóstico actual</div>
                 </div>
             </div>
-        </div>
+
+            <div class="auth-actions">
+                <button type="submit" class="auth-button">
+                    <span class="button-text">Guardar cambios</span>
+                    <i class="fas fa-save button-icon"></i>
+                </button>
+                <div class="text-center mt-3">
+                    <a href="{% url 'mi_detalle_paciente' %}" class="form-link">
+                        <i class="fas fa-arrow-left"></i> Volver al perfil
+                    </a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
 <style>
-    .form-control, .form-select {
-        border: 1px solid #6c757d !important;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    .auth-select-wrapper {
+        position: relative;
+        width: 100%;
     }
-    .form-control:focus, .form-select:focus {
-        border-color: #dc3545 !important;
-        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    
+    .auth-select-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--font-color-sub);
+        pointer-events: none;
     }
-    .card {
-        border-radius: 0.5rem;
+    
+    .auth-input[type="select"] {
+        appearance: none;
     }
-    .btn-outline-secondary {
-        border-color: #6c757d;
-    }
-    .alert-info {
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
-        color: #495057;
-    }
-    .alert-link {
-        color: #dc3545;
-        text-decoration: underline;
+    
+    .input-hint {
+        font-size: 0.875rem;
+        color: var(--font-color-sub);
+        margin-top: 0.5rem;
     }
 </style>
 {% endblock %}
