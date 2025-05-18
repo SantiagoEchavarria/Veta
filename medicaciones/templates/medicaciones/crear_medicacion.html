@@ -1,55 +1,90 @@
-{% extends 'usuarios/base.html' %}
-{% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 80px); margin-top: 20px;">
-    <div class="card shadow-lg w-100" style="max-width: 480px;">
-        <div class="card-body">
-            <div class="text-center">
-                <h1 class="card-title h3">Registrar Medicación</h1>
-                {{ error }}
-            </div>
-            {% if form_errors %}
-                <div class="alert alert-danger mt-3">
-                    <ul class="mb-0">
-                        {% for field, errors in form_errors.items %}
-                            <li><strong>{{ field }}:</strong> {{ errors.0 }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            <div class="mt-4">
-                <form method="post">
-                    {% csrf_token %}
-                    
-                    <div class="mb-3">
-                        <label class="form-label text-muted">Paciente</label>
-                        <input type="text" class="form-control" value="{{ request.user.nombre }}" readonly>
-                    </div>
+{% extends "usuarios/base.html" %}
 
-                    <div class="mb-3">
-                        <label for="id_nombre_medicamento" class="form-label text-muted">Nombre del Medicamento</label>
-                        <input type="text" name="nombre_medicamento" id="id_nombre_medicamento" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_dosis" class="form-label text-muted">Dosis</label>
-                        <input type="text" name="dosis" id="id_dosis" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_frecuencia" class="form-label text-muted">Frecuencia (En horas)</label>
-                        <input type="number" name="frecuencia" id="id_frecuencia" class="form-control" min="1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_hora_inicio" class="form-label text-muted">Fecha y Hora de inicio</label>
-                        <input type="datetime-local" name="hora_inicio" id="id_hora_inicio" class="form-control" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-dark btn-lg">Guardar Medicación</button>
-                    </div>
-                    <div class="d-flex justify-content-center mt-3">
-                        <a href="{% url 'listar_medicacion'%}" class="btn btn-gray btn-lg">Ver listado de medicaciones</a>
-                    </div>
-                </form>
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Registrar Medicación</h1>
+            
+            {% if form.errors %}
+            <div class="auth-error">
+                <ul class="error-list">
+                    {% for field, errors in form.errors.items %}
+                        <li><strong>{{ field|title }}:</strong> {{ errors.0 }}</li>
+                    {% endfor %}
+                </ul>
             </div>
+            {% endif %}
         </div>
+
+        <form class="auth-form" method="post">
+            {% csrf_token %}
+            
+            <!-- Paciente -->
+            <div class="auth-input-group">
+                <label class="input-label">Paciente</label>
+                <input type="text" 
+                       class="auth-input"
+                       value="{{ request.user.nombre }}"
+                       readonly>
+            </div>
+
+            <!-- Nombre del Medicamento -->
+            <div class="auth-input-group">
+                <label for="id_nombre_medicamento" class="input-label">Nombre del Medicamento</label>
+                <input type="text" 
+                       name="nombre_medicamento" 
+                       id="id_nombre_medicamento" 
+                       class="auth-input" 
+                       required>
+            </div>
+
+            <!-- Dosis -->
+            <div class="auth-input-group">
+                <label for="id_dosis" class="input-label">Dosis</label>
+                <input type="text" 
+                       name="dosis" 
+                       id="id_dosis" 
+                       class="auth-input" 
+                       required>
+            </div>
+
+            <!-- Frecuencia -->
+            <div class="auth-input-group">
+                <label for="id_frecuencia" class="input-label">Frecuencia (horas)</label>
+                <input type="number" 
+                       name="frecuencia" 
+                       id="id_frecuencia" 
+                       class="auth-input"
+                       min="1" 
+                       required>
+            </div>
+
+            <!-- Hora de Inicio -->
+            <div class="auth-input-group">
+                <label for="id_hora_inicio" class="input-label">Fecha y Hora de inicio</label>
+                <input type="datetime-local" 
+                       name="hora_inicio" 
+                       id="id_hora_inicio" 
+                       class="auth-input" 
+                       required>
+            </div>
+
+            <div class="auth-input-group">
+                <button type="submit" class="auth-button">
+                    <span class="button-text">
+                        Guardar Medicación
+                    </span>
+                    <i class="fas fa-save button-icon"></i>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <a href="{% url 'listar_medicacion' %}" class="form-link">
+                    <i class="fas fa-list-alt"></i> Ver listado de medicaciones
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
