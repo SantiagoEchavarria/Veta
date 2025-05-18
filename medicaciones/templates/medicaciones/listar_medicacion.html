@@ -1,40 +1,45 @@
-{% extends 'usuarios/base.html' %}
+{% extends "usuarios/base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 80px); margin-top: 20px;">
-    <div class="card shadow-lg w-100" style="max-width: 480px;">
-        <div class="card-body">
-            <div class="text-center">
-                <h1 class="card-title h3">Lista de Medicaciones</h1>
-            </div>
+<div class="data-container">
+    <h2>Mis Medicaciones</h2>
+    <a href="{% url 'crear_medicacion' %}" class="button primary">Registrar Nueva Medicación</a>
 
-            {% if medicaciones %}
-                <ul class="list-group mt-3">
-                    {% for medicacion in medicaciones %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>
-                                <strong>{{ medicacion.nombre }}</strong>  {{ medicacion.nombre_medicamento }}
-                            </span>
-                            <div class="d-flex gap-2">
-                                <a href="{% url 'editar_medicacion' medicacion.id %}" class="btn btn-sm btn-outline-primary">
-                                    Editar
-                                </a>
-                                <a href="{% url 'eliminar_medicacion' medicacion.id %}" class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Estás seguro de que quieres eliminar esta medicación?');">
-                                    Eliminar
-                                </a>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-muted text-center mt-3">No hay medicaciones registradas.</p>
-            {% endif %}
-
-            <div class="d-grid mt-4">
-                <a href="{% url 'crear_medicacion' %}" class="btn btn-dark btn-lg">Registrar Nueva Medicación</a>
-            </div>
-        </div>
-    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Medicamento</th>
+                <th>Dosis</th>
+                <th>Hora Inicio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicacion in medicaciones %}
+            <tr>
+                <td>{{ medicacion.nombre_medicamento }}</td>
+                <td>{{ medicacion.dosis }}</td>
+                <td>{{ medicacion.frecuencia }} horas</td>
+                <td>{{ medicacion.hora_inicio }}</td>
+                <td class="actions">
+                    <a href="{% url 'editar_medicacion' medicacion.id %}" class="button warning">Editar</a>
+                    <form class="inline-form" action="{% url 'eliminar_medicacion' medicacion.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="button danger" 
+                                onclick="return confirm('¿Estás seguro de eliminar esta medicación?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty-message">No hay medicaciones registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
