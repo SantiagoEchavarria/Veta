@@ -8,61 +8,27 @@
    cd Veta
    ```
 2. **Crear el entorno virtual**
-   ```bash
-   # Windows
-   python -m venv venv
-
-   # Linux/macOS
-   python3 -m venv venv
+   [3.11.2](https://www.python.org/downloads/release/python-3112/)
+    ```bash
+   # Trabaja con la version 3.11
+   # python3.11 -m venv venv
+   py -3.11 -m venv venv
    ```
+  
 3. **Activar el entorno virtual**
    ```bash
    # Windows (CMD o PowerShell)
    venv\Scripts\activate
-
+   ```
+   ```
    # Linux/macOS
    source venv/bin/activate
    ```
 4. **Instalar dependencias**
    ```bash
    pip install -r requirements.txt
-   ```
-5. **Si no existe `requirements.txt`, puedes generarlo con**
-    ```bash
-    pip freeze > requirements.txt
-    ```
-6. **Verificar instalación**
-   ```bash
-   python -m django --version
-   ```
-7. **Desactivar entorno virtual (opcional)**
-   ```bash
-   deactivate
-   ```
-
+   ``` 
 ---
-
-## Usar una versión específica de Python (opcional)
-
-Si necesitas especificar una versión concreta de Python (por ejemplo, 3.11):
-[3.11.2](https://www.python.org/downloads/release/python-3112/)
-1. **Crear entorno virtual con versión específica**
-   ```bash
-   # Reemplaza 3.11 por tu versión deseada
-   # python3.11 -m venv venv
-   py -3.11 -m venv venv
-   ```
-2. **Verificar versión del entorno virtual**
-   ```bash
-   # Windows
-   venv\Scripts\python --version
-
-   # Linux/macOS
-   venv/bin/python --version
-   ```
-
----
-
 ## Ejecutar el proyecto  
 ```bash
 python manage.py runserver
