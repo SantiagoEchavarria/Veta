@@ -60,9 +60,19 @@ def verificar_medicaciones():
                 print(f"[{tiempo_actual}] Error en la verificación: {str(e)}")
 
         time.sleep(30)
+from django.conf import settings
+import os
 
+def iniciar_hilo_medicaciones():
+    # No ejecutar durante migraciones
+    if 'runserver' not in os.sys.argv:
+        return
 
-def iniciar_hilo_medicaciones(sender, **kwargs):
-    thread = threading.Thread(target=verificar_medicaciones, daemon=True)
-    thread.start()
+    hilo = threading.Thread(target=verificar_medicaciones, daemon=True)
+    hilo.start()
     print("[Django] Hilo de medicaciones iniciado correctamente.")
+
+##def iniciar_hilo_medicaciones(sender, **kwargs):
+  #  thread = threading.Thread(target=verificar_medicaciones, daemon=True)
+   # thread.start()
+    #print("[Django] Hilo de medicaciones iniciado correctamente.")
